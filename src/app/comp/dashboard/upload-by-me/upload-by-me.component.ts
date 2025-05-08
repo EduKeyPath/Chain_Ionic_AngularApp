@@ -128,7 +128,7 @@ export class UploadByMeComponent implements OnInit {
 
       /* this.selectedContactData.push({
         name: data['displayName'],
-        numbers: num.join(',')   //"9073264158/ 9073264157/ 9073264156/ 9073264155"
+        numbers: num.join(',')   
       }) */
       //console.log(this.selectedContactData);
     }
