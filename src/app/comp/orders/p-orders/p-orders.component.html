@@ -1,0 +1,68 @@
+<ion-content [fullscreen]="true">  
+  <section class="main-page">
+    <header class="header-strip">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+            <span class="title txt">Place Orders</span>
+        </ion-buttons>
+    </header>
+    <section class="body-content">
+        <div class="tab two">
+            <ul>
+                <li routerLink="/Orders/ReceivedOrders">Received Order</li>
+                <li class="active">Placed Order</li>
+            </ul>
+        </div>
+        <main>
+            <div class="main-body-scroll">
+                <div class="loading" *ngIf="showloader">
+                    <div class="load">
+                        <span class="spinner"></span>
+                    </div>
+                </div>
+                <div class="no-data" *ngIf="!!pOrderData && pOrderData.length == 0">
+                    <h5>No Data Found</h5>
+                    <p class="lead">You didn't placed any order yet.</p>
+                </div>
+                <div class="order-list">
+                    <div class="card" [routerLink]="['/Orders/PlacedOrders/OrderDetails', po.id]" *ngFor="let po of pOrderData;">
+                        <div class="card-inr">
+                            <div class="order">
+                                <div class="order-date">
+                                    <h2 class="date">{{po.createdOn | mDateFilter:po.timezone:'Do'}}</h2>
+                                    <h5 class="month">{{po.createdOn | mDateFilter:po.timezone:'MMMM'}}</h5>
+                                </div>
+                                <div class="order-info">
+                                    <h3 class="price">{{po.currency}}{{po.total}}, <span class="total-item">{{po.totalItem}} Items</span></h3>
+                                    <p class="txt capital">
+                                        <i class="material-icons">person</i>
+                                        {{po.brandName}}
+                                    </p>
+                                    <p class="txt">
+                                        <i class="material-icons">confirmation_number</i>
+                                        {{po.orderNumber}}
+                                    </p>
+                                    <p class="txt">
+                                        <i class="material-icons">place</i>
+                                        {{po.shippingCity}}, {{po.shippingCountry}}
+                                    </p>
+                                </div>
+                                <div class="order-status">
+                                    <span class="badge badge-success" *ngIf="po.status == 'New'">{{po.status}}</span>
+                                    <p class="note" *ngIf="po.status == 'Cancelled'">{{po.status}}</p>
+                                    <p class="note" *ngIf="po.status == 'Rejected'">{{po.status}}</p>
+                                    <p class="note" *ngIf="po.status == 'Shipped'">{{po.status}}</p>
+                                    <p class="note" *ngIf="po.status == 'Delivered'">{{po.status}}</p>
+                                    <span *ngIf="po.status == 'Approved' && po.paymentStatus == 'Unpaid'" class="badge badge-danger">Unpaid</span>
+                                    <span *ngIf="po.paymentStatus == 'Pending'" class="badge badge-warning">Paid, Waiting for Approval</span>
+                                    <span *ngIf="po.status == 'Approved' && po.paymentStatus == 'Paid'" class="badge badge-info">InProcess</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                            
+                </div>
+            </div>
+        </main>
+    </section>
+</section>
+</ion-content>

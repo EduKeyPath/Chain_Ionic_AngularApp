@@ -1,0 +1,90 @@
+<ion-content [fullscreen]="true">  
+  <section class="main-page">
+    <header class="header-strip">
+        <i class="material-icons" routerLink="../">arrow_back_ios</i>
+        <span class="title text-left w-100">Edit Profile</span>
+    </header>
+    <section class="body-content profile-content">
+        <div class="profile-bar">
+            <div class="profile-img">
+                <img src="assets/img/no-img.jpg" alt="">
+            </div>
+        </div>
+        <main>
+            <div class="profile-body">
+                <div class="form-body">
+                    <form name="form" (ngSubmit)="editProfie.form.valid && editProfile()" #editProfie="ngForm">
+                        <div class="form-group">
+                            <span *ngIf="editProfie.submitted && name.invalid" class="text-danger alert-fld-msg">
+                                <div *ngIf="name.errors.required">Name is required</div>
+                            </span>
+                            <mat-form-field>
+                                <input type="text" name="name" [(ngModel)]="profileData.name" #name="ngModel" [ngClass]="{ 'is-invalid': editProfie.submitted && name.invalid }" required class="fld" matInput placeholder="Your Name">
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group">
+                            <mat-radio-group name="gender" [(ngModel)]="profileData.gender" #gender="ngModel" aria-label="Select Gender">
+                                <mat-radio-button value="Male">Male</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <mat-radio-button value="Female">Female</mat-radio-button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <mat-radio-button value="Other">Other</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                        <div class="form-group">
+                            <mat-form-field>
+                                <input type="number" name="mobile" [(ngModel)]="profileData.mobile" #mobile="ngModel" class="fld" matInput readonly>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group">
+                            <mat-form-field>
+                                <input type="number" name="altMobile" [(ngModel)]="profileData.altMobile" #altMobile="ngModel" class="fld" matInput placeholder="Your Alt. Mobile.">
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group">
+                            <mat-form-field>
+                                <input type="email" name="email" [(ngModel)]="profileData.email" #email="ngModel"  class="fld" matInput placeholder="Your Email-id">
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group">
+                            <mat-form-field>
+                                <textarea matInput name="address" [(ngModel)]="profileData.address" #address="ngModel" class="fld" placeholder="Address"></textarea>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group">
+                            <mat-form-field>
+                                <mat-label>Select From: Country</mat-label>
+                                <mat-select name="country" [(ngModel)]="profileData.country">
+                                    <mat-option (onSelectionChange)="onCountryChange(i)" *ngFor="let country of contryList; let i = index;" [value]="country">
+                                        {{country}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group">
+                            <mat-form-field>
+                                <mat-label>Select From: State</mat-label>
+                                <mat-select name="state" [(ngModel)]="profileData.state">
+                                    <mat-option>None</mat-option>
+                                    <mat-option *ngFor="let state of stateList; let i = index;" [value]="state">
+                                        {{state}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group">
+                            <mat-form-field>
+                                <input type="text" name="city" [(ngModel)]="profileData.city" #city="ngModel" class="fld" matInput placeholder="Your City Name">
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group">
+                            <mat-form-field>
+                                <input type="number" name="pincode" [(ngModel)]="profileData.pincode" #pincode="ngModel" class="fld" matInput placeholder="Pincode">
+                            </mat-form-field>
+                        </div>
+                        <button type="submit" [class.spinner]="loading" [disabled]="loading" class="btn btn-warning signin-btn">Update Profile</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </section>
+</section>
+</ion-content>

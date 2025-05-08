@@ -1,0 +1,16 @@
+<ion-content [fullscreen]="true">  
+  <div class="connec">
+    <span class="material-icons">
+        block
+    </span>
+    <p>
+        You account has been Blocked or Deactivated. <br/>
+        Please contact admin for further details.
+    </p>
+    <a class="btn" (click)="backToLogin()">Back to Login</a>
+    <a class="btn mt-2" routerLink="/Contents/Support">Contact Us</a>
+    <div class="logo">
+        <img src="{{logo}}" alt="">
+    </div>
+</div>
+</ion-content>

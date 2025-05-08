@@ -1,0 +1,185 @@
+<ion-content [fullscreen]="true">  
+  <section class="main-page">
+    <div class="overlay-loading" *ngIf="pageLoading">
+        <div class="load">
+            <span class="spinner"></span> Loading...
+        </div>
+    </div>
+    <header class="header-strip left-header">
+        <i class="material-icons" routerLink="../Cart">arrow_back_ios</i>
+        <div class="title w-100 text-left">Product Shipping Details</div>
+        <div class="right-icon">
+            <span class="icon">
+                <span class="counter">{{totalCartItems}}</span>
+                <i class="material-icons">shopping_basket</i>
+            </span>
+        </div>
+    </header>
+    <section class="body-content">
+        <main>
+            <form class="mt-0" [formGroup]="productShipForm" (ngSubmit)="makeOrder()">
+                <div class="shipping-form">
+                    <div class="form-body">                    
+                        <div class="form-group form-check">
+                            <label class="form-check-label normal">
+                                <mat-checkbox value="adrsChecked" (click)="changeChbxValue(adrsChecked)"> Default Address</mat-checkbox>
+                            </label>
+                        </div>
+                        <div *ngIf="adrsChecked == false" class="default-address view-details">
+                            <table *ngIf="!!profileData && profileData.address && profileData.pincode else noData">
+                                <tr *ngIf="!!profileData.name">
+                                    <td><label>Name</label></td>
+                                    <td>{{profileData.name}}</td>
+                                </tr>
+                                <tr *ngIf="!!profileData.mobile">
+                                    <td><label>Mobile</label></td>
+                                    <td>{{profileData.mobile}}</td>
+                                </tr>
+                                <tr *ngIf="!!profileData.altMobile">
+                                    <td><label>Alt Mobile</label></td>
+                                    <td>{{profileData.altMobile}}</td>
+                                </tr>
+                                <tr *ngIf="!!profileData.email">
+                                    <td><label>Email</label></td>
+                                    <td>{{profileData.email}}</td>
+                                </tr>
+                                <tr *ngIf="!!profileData.address">
+                                    <td><label>Address</label></td>
+                                    <td>{{profileData.address}}</td>
+                                </tr>
+                                <tr *ngIf="!!profileData.city">
+                                    <td><label>City</label></td>
+                                    <td>{{profileData.city}}</td>
+                                </tr>
+                                <tr *ngIf="!!profileData.pincode">
+                                    <td><label>Pincode</label></td>
+                                    <td>{{profileData.pincode}}</td>
+                                </tr>
+                                <tr *ngIf="!!profileData.state">
+                                    <td><label>State</label></td>
+                                    <td>{{profileData.state}}</td>
+                                </tr>
+                                <tr *ngIf="!!profileData.country">
+                                    <td><label>Country</label></td>
+                                    <td>{{profileData.country}}</td>
+                                </tr>
+                            </table>
+                            <ng-template #noData>
+                                <div class="no-data">
+                                    <h5>You did't save your address</h5>
+                                    <p class="lead">You can save  your address in your profile, for fill the form quick</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                        <div *ngIf="adrsChecked == true" class="new-address">
+                            <div class="form-group">
+                                <span class="text-danger alert-fld-msg"
+                                    *ngIf="(psF.name.touched || submitted) && psF.name.errors?.required">
+                                    Please enter your Name
+                                </span>
+                                <mat-form-field>
+                                    <input type="text" formControlName="name" class="fld" matInput placeholder="Your Name">
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group">
+                                <span class="text-danger alert-fld-msg"
+                                    *ngIf="(psF.mobile.touched || submitted) && psF.mobile.errors?.required">
+                                    Please enter your contact no.
+                                </span>
+                                <mat-form-field>
+                                    <input type="number" formControlName="mobile" class="fld" matInput placeholder="Your Contact no.">
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group">
+                                <mat-form-field>
+                                    <input type="number" formControlName="altMobile" class="fld" matInput placeholder="Your Alt. Mobile.">
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group">
+                                <mat-form-field>
+                                    <input type="email" formControlName="email" class="fld" matInput placeholder="Your Email-id">
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group">
+                                <span class="text-danger alert-fld-msg"
+                                    *ngIf="(psF.address.touched || submitted) && psF.address.errors?.required">
+                                    Please enter your shipping address
+                                </span>
+                                <mat-form-field>
+                                    <textarea matInput formControlName="address" class="fld" placeholder="Address"></textarea>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group">
+                                <span class="text-danger alert-fld-msg"
+                                    *ngIf="(psF.country.touched || submitted) && psF.country.errors?.required">
+                                    Please select your country
+                                </span>
+                                <mat-form-field>
+                                    <mat-label>Select From: Country</mat-label>
+                                    <mat-select formControlName="country">
+                                        <mat-option>None</mat-option>
+                                        <mat-option (onSelectionChange)="onCountryChange(i)" *ngFor="let country of contryList; let i = index;" [value]="country">{{country}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <span class="text-danger alert-fld-msg"
+                                        *ngIf="(psF.state.touched || submitted) && psF.state.errors?.required">
+                                        Please select your country
+                                    </span>
+                                    <mat-form-field>
+                                        <mat-label>Select From: State</mat-label>
+                                        <mat-select  formControlName="state">
+                                            <mat-option>None</mat-option>
+                                            <mat-option *ngFor="let state of stateList; let i = index;" [value]="state">{{state}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="text-danger alert-fld-msg"
+                                    *ngIf="(psF.city.touched || submitted) && psF.city.errors?.required">
+                                    Please enter your city
+                                </span>
+                                <mat-form-field>
+                                    <input type="text" formControlName="city" class="fld" matInput placeholder="Your City Name">
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group">
+                                <span class="text-danger alert-fld-msg"
+                                    *ngIf="(psF.pincode.touched || submitted) && psF.pincode.errors?.required">
+                                    Please enter your pincode
+                                </span>
+                                <mat-form-field>
+                                    <input type="number" formControlName="pincode" class="fld" matInput placeholder="Pincode">
+                                </mat-form-field>
+                            </div>
+                            <div class="form-group">
+                                <mat-form-field>
+                                    <textarea matInput formControlName="comment" placeholder="Any Message"></textarea>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-btn-row">
+                    <div class="row">
+                        <div class="col">
+                            <div class="cart-total">
+                                <small>Total Item: <b>{{totalCartItems}}</b></small>
+                                <h5 class="total">{{totalPrice | curncFilter}}</h5>
+                            </div>
+                        </div>
+                        <div class="col">						
+                            <div class="cart-btn">                                
+                                <button type="submit" [class.spinner]="loading" [disabled]="loading" class="btn btn-warning signin-btn">Place Order</button>
+                            </div>
+                        </div>
+                    </div>					
+                </div>
+            </form>
+        </main>
+    </section>
+</section>
+</ion-content>

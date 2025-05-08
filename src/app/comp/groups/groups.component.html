@@ -1,0 +1,43 @@
+<ion-content [fullscreen]="true">  
+  <section class="main-page">
+      <header class="header-strip">
+          <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+            <span class="title txt">Group List</span>
+          </ion-buttons>
+      </header>
+      <section class="body-content">
+          <main class="contact-page">
+              <div class="contact-list">
+                  <ul>
+                      <li routerLink="../AddGroup" class="pt-0">
+                          <div class="contact-icon"><img src="assets/img/group-img.jpg" alt="" /></div>
+                          <div class="contact">
+                              <h6 class="contact-name">New Group</h6>
+                          </div>
+                      </li>
+                      <li class="border-0" *ngIf="showloader">
+                          <div class="loading">
+                              <div class="load">
+                                  <span class="spinner"></span>
+                              </div>
+                          </div>
+                      </li>
+                      <div class="no-data" *ngIf="noData">
+                          <h5>No Data Found</h5>
+                          <p class="lead">Not Created any group yet</p>
+                      </div>
+                      <li *ngFor="let g of groupList | sortBy:'asc':'name'; let i = index" [routerLink]="['../GroupDetails', g.id]">
+                          <div class="contact-icon">{{g.name | charFilter}}</div>
+                          <div class="contact">
+                              <h6 class="contact-name capital">{{g.name}}</h6>
+                              <p class="no">{{g.totalMembers}} Members</p>
+                          </div>
+                          <span class="badge badge-info">*{{g.multiple}}</span>
+                      </li>
+                  </ul>
+              </div>
+          </main>
+      </section>
+  </section>    
+</ion-content>

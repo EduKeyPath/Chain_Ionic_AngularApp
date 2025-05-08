@@ -1,0 +1,29 @@
+<ion-content [fullscreen]="true">  
+  <section class="screen login-screen login-page">
+      <div class="screen-content">
+          <div class="logo">
+              <img src="{{logo}}" alt="">
+          </div>
+          <p class="slogan">
+              Increase Chain, <br>
+              Decrease Headache
+          </p>
+      </div>
+      <div class="clearfix"></div>
+      <div class="screen-bottom-content">
+          <div class="login-panel">
+              <p>Please check your <span>Mobile</span> and enter your <span>Verification Code</span></p>
+              <form [formGroup]="verifyFrom" (ngSubmit)="userVerify()">
+                  <div class="form-group">
+                      <mat-form-field>
+                          <input type="number" formControlName="otp" class="fld" matInput placeholder="Varification Code" value="">
+                      </mat-form-field>
+                  </div>
+                  <h5 *ngIf="resendOtpD">Didn't Received OTP? &nbsp;<a style="color:#5f4d99;" (click)="resendOtp()">Resend OTP</a></h5>
+                  <br/>
+                  <button type="submit" [class.spinner]="loading" [disabled]="loading" class="btn btn-warning signin-btn">Submit</button>
+              </form>
+          </div>
+      </div>
+  </section>
+</ion-content>

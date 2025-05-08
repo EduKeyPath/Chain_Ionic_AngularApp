@@ -1,0 +1,150 @@
+@media screen and (min-width: 1170px) {
+li, p {color: #3f3f3f;font-weight: normal;font-size: 17px;line-height: 26px;}
+main {width: 95%;margin: 30px auto;}
+.content-body b {/* font-weight: 600; */color: #000;}
+.login-page {height: 100%;}
+.screen.login-page .screen-content {width: 50%;}
+.screen-bottom-content {position: absolute;padding:15px;top: 0;right: 0;background: #fff;
+width: 50%;height: 100%;overflow-y: auto; overflow-x: hidden;display: flex;
+justify-content: center;}
+.login-panel {margin-top: 50px;width: 80%;}
+.login-panel p span {color: #838383/* ;font-weight: 600; */}
+.login-panel .help {margin-bottom: 50px;}
+.login-screen p.slogan {font-size: 15px;line-height: 21px;}
+.login-panel p {font-size: 14px;}
+.login-screen button {font-size: 20px;}
+.login-panel h5 {font-size: 13px;}
+.mat-form-field-infix {font-size: 18px;}
+.mat-form-field-appearance-legacy .mat-form-field-label {font-size: 16px;}
+.alert-fld-msg {font-size: 15px;}
+form .form-group .terms {font-size: 15px;}
+.header-strip .material-icons, .small-screen-popup .material-icons, .full-screen-popup .material-icons {
+font-size: 32px;}
+.header-strip .material-icons, .small-screen-popup .material-icons, .full-screen-popup .material-icons {
+cursor: pointer;}
+.header-strip .title {font-size: 19px;}
+.body-content {margin-top:70px;}
+.body-content.profile-content {margin-top: 57px;}
+.mat-expansion-panel-header {font-size: 19px;letter-spacing: 0.2px;}
+.contact-form {width: 60%;margin: 25px auto;padding: 30px;background: #fff; border-radius: 25px;
+background-color: white;box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);}
+.btn-warning {font-size: 20px;padding: 8px 30px;}
+.mat-menu-item {font-size: 17px;}
+.counter {width: 21px;height: 21px;font-size: 13px;}
+.tab {position: fixed;width: 250px;height: 100%;background: #fff;}
+.tab ul {border-bottom:none;display: block;}
+.main-body-scroll {height: auto;width: 80%;width: 80%; float: right;}
+.tab ul li { justify-content: flex-start;width: 100%; border-bottom: none;
+border-radius: 0 35px 35px 0;height: auto;color: rgba(0, 0, 0, 0.5);font-size: 17px;
+padding: 16px 17px;}
+.tab.two li {width: 100%;}
+.tab ul li.active, .tab ul li:hover {color: rgb(0, 0, 0);background: #fbb51b;border-bottom: none;}
+h6.date-time {margin: 0 0 5px 0;font-size: 17px;}
+.contact-list ul li {padding: 12px 13px;}
+.product-list ul li {padding: 0;width: calc(100%/7);height: 165px;}
+.contact-list ul li:hover {background: rgba(0, 0, 0, 0.02);}
+.contact-list ul li .contact-icon {width: 60px;height: 60px; font-size:20px;}
+.contact-list ul li .contact .contact-name {font-size: 20px!important;}
+.contact-list ul li .no {font-size: 15px;margin: 6px 0 0px 0;}
+.contact-list ul li .date {font-size: 15px;}
+.badge {top: 13px;font-size: 14px;    right: 15px;}
+.product-details-list ul li {display: inline-flex;width: 49%;}
+.icon-list .icon {cursor: pointer;}
+.snack-bar .alert {font-size: 15px;line-height:22px;}
+.mat-expansion-panel-header {height: 60px!important;}
+.product-details-list {margin-bottom: 20px;}
+product-details-list ul li .product-info p {font-size: 17px; line-height: 22px;}
+.product-details-list ul li .product-info .material-icons {font-size: 19px;}
+.product-details-list ul li .product-info .fld {font-size: 18px;}
+.full-screen-popup .strip-bar .heading {font-size: 20px;}
+.full-screen-popup .inr-content {width: 50%;margin: 10px auto;}
+.product-cart-list, .shipping-form, .order-details {padding-bottom: 0;width: 75%;}
+.order-details .product-cart-list {width:100%;}
+.cart-btn-row {width:22%;position: fixed;bottom: auto;left: auto;border-top: none;background-color: transparent;
+right: 30px;top: 75px;height: 100%;}
+.product-row .product-img img {width: 100px;height: 100px;}
+.product-row .product-info p {font-size: 16px;line-height: 24px;}
+.product-row .product-info p b {font-size: 15px;}
+.product-row h6.price {font-size: 25px;}
+.product-row .remove-btn {font-size: 15px;line-height: 17px;height: 32px;}
+.product-row .product-info .input-group {margin: 6px 0 0 0;}
+.product-row .input-group .fld {font-size: 16px;}
+.cart-btn-row .cart-total small {font-size: 17px;line-height: 30px;}
+.no-data {padding: 55px 25px;}
+.no-data h5 {font-size: 24px;margin-bottom: 10px;}
+.no-data p {font-size:20px;}
+.cart-btn-row .col {flex-basis: auto;}
+.cart-btn-row .cart-total {width: 100%;margin-bottom: 31px;
+text-align: right;padding-right: 11px;}
+.cart-btn-row .cart-total .total {font-size: 30px;margin: 15px 0 0 0;}
+.cart-btn-row .cart-btn { margin: 35px 0 0 0;}
+.cart-btn-row .row {padding: 25px 5px; border-radius: 15px;background: rgba(0, 0, 0, 0.015);}
+.normal .mat-checkbox-inner-container {height: 20px!important;width: 20px!important;}
+.mat-checkbox-layout .mat-checkbox-label {line-height: 24px;font-size: 17px;}
+form .form-group {margin-bottom: 18px;}
+.view-details table td {padding: 8px 0;}
+.view-details label, .view-details td {font-size: 18px;}
+.order-success {height: auto;width: 95%;}
+.order-success h2 {font-size: 24px;}
+.order-success p {font-size: 18px;line-height: 27px;}
+.order .order-status .note {font-size: 16px;}
+.order .order-date h2.date {height: 72px;font-size: 28px;}
+.order .order-date h5.month {font-size: 15px;padding: 5px 0;}
+.order .order-info h3.price {font-size: 24px;line-height: 24px;}
+.order .order-info h3.price .total-item {font-size: 16px;}
+.order .order-info p.txt {margin: 4px 0 0 0;line-height: 22px;font-size: 16px;}
+.order .order-info .material-icons {padding-right: 3px;}
+.order-details h3 {margin: 33px 0 6px 0;font-size: 20px;}
+.small-screen-popup .strip-bar .heading {font-size: 20px;}
+.small-screen-popup .inr-content {width: 42%;}
+.cart-btn-row .cart-total .ship {font-size: 18px;}
+.default-btn {font-size: 20px;}
+.profile-body .profile-info h5.name {font-size: 30px;}
+.profile-body {width: 70%;margin: 0 auto;}
+.profile-body .edit-icon .material-icons {font-size: 24px;}
+.payment-details h4 {margin: 0 0 8px 0;font-size: 18px;}
+.profile-body .more-info ul li {margin: 0 0 22px 0;}
+.profile-body .more-info ul li .icon {width: 35px;}
+.profile-body .more-info ul li .icon .material-icons {font-size: 22px;}
+.profile-body .more-info ul li {font-size: 20px;}
+.note { font-size: 14px; line-height: 20px;}
+.profile-body .form-body {padding: 30px;border-radius: 25px;background-color: white;
+box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);}
+orm .form-group label {font-size: 18px;}
+.product-details-list ul li .product-info p {font-size: 17px;}
+.contact-page .contact-list {padding: 0;width: 65%;margin: 0 auto;background: #fff;
+border-radius: 25px;background-color: white;box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);}
+.search-bar {height: 58px;}
+.search-bar .fld {height: 60px;font-size: 19px;padding: 5px 15px 5px 67px;}
+.upload-pic-body {position: inherit;}
+.upload-pic-box { height: auto;left: unset;right: 0;position: inherit;width: 100%;}
+.upload-pic-box form  { height: auto;left: unset;right: 25px;position: fixed;width: 30%;top: 80px;
+padding: 30px 30px 20px 30px;border-radius: 25px;background-color: white;
+box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);}
+.upload-btn {position: relative;}
+.process-product-list {display: block;height: auto;width: 66%;}
+.process-product-list .product-list ul li {margin-bottom: 15px;}
+.process-product-list .product-list ul li img {height: 135px;}
+.process-product-list .fld {font-size: 16px;}
+.pop-header-fld {font-size: 20px;}
+.add-group p.note, .group-details p.note {font-size: 15px;line-height: 22px;}
+
+.group-details .scroll-section {height: auto;width: 65%;background: #fff;
+border-radius: 25px;background-color: white;box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);}
+.group-form {height: auto;right: 25px;position: fixed;width: 30%;top: 80px;
+padding: 30px 30px 20px 30px;border-radius: 25px;background-color: white;
+box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);}
+.contact-list ul li .right-action a {width: 42px;height: 40px;}
+.contact-list ul li .right-action a .material-icons {font-size: 24px;}
+.float-icon .material-icons {font-size: 35px; cursor: pointer;}
+.add-group .contact-list {height: auto;}
+.add-group .upload-pic-box form {height: auto;left: unset;right: unset;position: static;
+width: 65%;top: unset;padding: 0;border-radius: 25px;background-color: white;
+box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);}
+.add-group .upload-btn {position: fixed;right: 25px;width: 30%;bottom: 0;left: unset;}
+.add-group .contact-list.selected {height: auto;}
+.add-group .group-list ul li {padding: 4px!important;width: 90px;}
+.add-group .group-list ul li .contact-name {font-size: 14px!important;}
+.add-group .remove {width: 20px;height: 20px;}
+.add-group .remove .material-icons {font-size: 15px;}
+}

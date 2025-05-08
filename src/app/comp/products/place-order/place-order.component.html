@@ -1,0 +1,32 @@
+<ion-content [fullscreen]="true">  
+  <section class="main-page">
+    <header class="header-strip">
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+          <span class="title txt">Order Successfull</span>
+        </ion-buttons>
+    </header>
+    <section class="body-content">
+        <main>
+            <div class="order-success">
+                <div class="tick-icon">
+                    <i class="material-icons">done</i>
+                </div>
+                <h2>Order Placed!</h2>
+                <p>Your order has been placed successfully.<br/>For more details check Your Order in your Profile.</p>
+                <p class="imp" routerLink="/Contents/Terms">
+                    <b style="font-weight: 500;">
+                        Please Read very carefully Payment Policy, Shipping Policy &amp; Refund Policy before payment
+                    </b>
+                </p>
+                <p>
+                    After accept your order from vendor, vendor will send shipping price.
+                    You will be able to show the total pay amount in your order section.
+                    Please pay the Total Amount (Product + Shipping price) and give the transaction details.
+                </p>
+                <button class="btn btn-warning signin-btn" routerLink="/Orders/PlacedOrders/">My Order</button>
+            </div>
+        </main>
+    </section>
+</section>
+</ion-content>

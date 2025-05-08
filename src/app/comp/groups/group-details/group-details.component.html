@@ -1,0 +1,128 @@
+<ion-content [fullscreen]="true">  
+  <section class="main-page">
+    <div class="overlay-loading" *ngIf="pageLoading">
+        <div class="load">
+            <span class="spinner"></span> Loading...
+        </div>
+    </div>
+    <header class="header-strip">
+        <div class="arrow" routerLink="/Groups">
+            <i class="material-icons">arrow_back_ios</i>
+        </div>
+        <div class="title">Group Details</div>
+        <div class="right-icon">&nbsp;</div>
+    </header>
+    <section class="body-content">
+        <main>                    
+            <div class="contact-list group-details">                
+                <div class="loading" *ngIf="showloader">
+                    <div class="load">
+                        <span class="spinner"></span>
+                    </div>
+                </div>
+                <section *ngIf="!showloader">
+                    <div class="group-form">
+                        <div>
+                            <mat-form-field>
+                                <input type="text" class="fld" matInput readonly value="{{getGroupDetailsData.name}}">
+                                <div class="edit-input-icon" (click)="editGroupName();">
+                                    <i class="material-icons">edit</i>
+                                </div>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field>
+                                <input type="text" class="fld" matInput readonly value="{{getGroupDetailsData.multiple}}">
+                            </mat-form-field>
+                            <p class="note">This Multiple Code for this group, if you enter 10, than 10 is multiply with your product code & show price (price code * multiple code) for this group list member.</p>
+                        </div>
+                    </div>
+                    <div class="scroll-section">
+                        <ul>
+                            <li *ngFor="let g of getGroupDetailsData.members  | sortBy:'asc':'name'; let i = index;">
+                                <div class="contact-icon">{{g.name | charFilter}}</div>
+                                <div class="contact">
+                                    <h6 class="contact-name">{{g.name}}</h6>
+                                    <!-- <p class="no">{{g.numbers}}</p> -->
+                                    <!-- <p class="no" *ngFor="let phone of g.numbers | unique:'value';">
+                                        {{phone.value}}
+                                    </p> -->
+                                </div>
+                                <div class="right-action">
+                                    <a class="remove" (click)="removeMember(g.id);">
+                                        <i class="material-icons">delete_outline</i>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="float-icon" (click)="addMember()">
+                        <i class="material-icons">add</i>
+                    </div>
+                </section>                
+            </div>
+        </main>
+    </section>
+</section>
+
+<div class="full-screen-popup" *ngIf="showAddMemPopup">
+    <div class="inr-content">
+        <div class="strip-bar">
+            <i class="material-icons" (click)="hideMemberPopup()">arrow_back_ios</i>
+            <span class="pop-header-search-bar">
+                <input type="text" class="pop-header-fld" (keyup)="contactFilter($event)" placeholder="Search">
+            </span>
+        </div>
+        <div class="main-content">
+            <div class="contact-list">
+                <ul>
+                    <li *ngFor="let c of contactList | sortBy:'asc':'displayName'; let i = index;"
+                        [ngClass]="{'itemSelect': selectMemContact.includes(c.id)}"
+                        (click)="selectMemContactForGroup(c)">
+                        <div class="contact-icon">{{c.displayName | charFilter}}</div>
+                        <div class="contact">
+                            <h6 class="contact-name">{{c.displayName}}</h6>
+                            <!-- <p class="no" *ngFor="let phone of c.phoneNumbers | unique:'value';">
+                                {{phone.value}}
+                            </p> -->
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="float-icon" (click)="addMemberGroup();">
+            <i class="material-icons" [class.spinner]="loading" [class.disabled]="loading">group_add</i>
+        </div>
+    </div>
+</div>
+
+<div class="small-screen-popup" *ngIf="showEditGroupNamePopup">
+    <div class="inr-content">
+        <div class="strip-bar">
+            <i class="material-icons" (click)="hideEditGroupNamePopup()">arrow_back_ios</i>
+            <span class="heading">
+                Edit Group Details
+            </span> 
+        </div>
+        <div class="main-content">
+            <form name="form" (ngSubmit)="gN.form.valid && updateGroupN()" #gN="ngForm">
+                <div class="form-group">
+                    <span *ngIf="gN.submitted && name.invalid" class="text-danger alert-fld-msg">
+                        <div *ngIf="name.errors.required">Group Name is required</div>
+                    </span>
+                    <mat-form-field>
+                        <input type="text" name="name" [(ngModel)]="groupName" #name="ngModel" [ngClass]="{ 'is-invalid': gN.submitted && name.invalid }" required class="fld" matInput placeholder="Group Name">
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <mat-form-field>
+                        <input type="text" name="multiple" [(ngModel)]="groupMultiple" #multiple="ngModel" class="fld" matInput placeholder="Enter Multiple Code for Price">
+                    </mat-form-field>
+                </div>
+                <button type="submit" [class.spinner]="loading" [disabled]="loading" class="btn btn-warning signin-btn small-btn">Update</button>
+            </form>       
+        </div>
+    </div>
+</div>
+</ion-content>

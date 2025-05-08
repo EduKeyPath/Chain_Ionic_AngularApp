@@ -1,0 +1,80 @@
+<ion-content [fullscreen]="true">  
+  <section class="main-page">
+      <div class="overlay-loading" *ngIf="pageLoading">
+          <div class="load">
+              <span class="spinner"></span> Loading...
+          </div>
+      </div>
+      <header class="header-strip">
+          <div class="search-bar" *ngIf="searchbar">
+              <i class="material-icons" (click)="hideSearchBar();">arrow_back_ios</i>
+              <input type="text" class="fld" (keyup)="contactFilter($event)" placeholder="Search">
+          </div>
+          <div class="arrow" routerLink="../">
+              <i class="material-icons">arrow_back_ios</i>
+          </div>
+          <div class="title">Add Group</div>
+          <div class="right-icon">
+              <span class="search-icon html-icon icon" (click)="showSearchBar();">
+                  <i class="material-icons">search</i>
+              </span>
+          </div>
+      </header>
+      <section class="body-content">
+          <main>
+              <div class="upload-pic-body add-group">
+                  <div class="upload-pic-box">
+                      <form class="mt-0" [formGroup]="addGroupForm" (ngSubmit)="addGroup();">
+                          <div class="group-form">
+                              <div class="form-group">
+                                  <span class="text-danger alert-fld-msg"
+                                      *ngIf="(addGroupForm.controls.name.touched || submitted) && addGroupForm.controls.name.errors?.required">
+                                      Please Group enter Name
+                                  </span>
+                                  <mat-form-field>
+                                      <input type="text" formControlName="name" class="fld" matInput placeholder="Enter Group Name" value="">
+                                  </mat-form-field>
+                              </div>
+                              <div class="form-group">
+                                  <mat-form-field>
+                                      <input type="number" formControlName="multiple" class="fld" matInput placeholder="Enter Multiple Code for Price" value="">
+                                  </mat-form-field>
+                                  <p class="note">Enter Multiple Code for this group, if you enter 10, than 10 is multiply with your product code & show price (price code * multiple code) for this group list member.</p>
+                              </div>
+                          </div>
+                          <div class="contact-list group-list" *ngIf="groupData.length > 0">
+                              <ul>
+                                  <li *ngFor="let c of groupData; let i = index;" (click)="removeSelContact(i,c.key)">
+                                      <div class="contact-icon">{{c.name | charFilter}}</div>
+                                      <h6 class="contact-name">{{c.name}}</h6>
+                                      <div class="remove">
+                                          <i class="material-icons">clear</i>
+                                      </div>
+                                  </li>
+                              </ul>
+                          </div>
+                          <div class="contact-list" [class.selected]="groupData.length > 0">
+                              <ul><!-- [style.background-color]="hkItem.roomStatus == 'Dirty' ? '#FADBFD' : '#DCFBFF'" -->
+                                  <li *ngFor="let c of contactList | sortBy:'asc':'displayName'; let i = index;"
+                                      [ngClass]="{'itemSelect': selectContact.includes(c.id)}"
+                                      (click)="selectContactForGroup(c)">
+                                      <div class="contact-icon">{{c.displayName | charFilter}}</div>
+                                      <div class="contact">
+                                          <h6 class="contact-name">{{c.displayName}}</h6>
+                                          <!-- <p class="no" *ngFor="let phone of c.phoneNumbers | unique:'value';">
+                                              {{phone.value}}
+                                          </p> -->
+                                      </div>
+                                  </li>
+                              </ul>
+                          </div>
+                          <div class="upload-btn">
+                              <button type="submit" [class.spinner]="loading" [disabled]="loading" class="btn btn-warning signin-btn">Create Group</button>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+          </main>
+      </section>
+  </section>
+</ion-content>

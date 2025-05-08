@@ -1,0 +1,50 @@
+<ion-content [fullscreen]="true">
+  <section class="screen login-screen login-page">
+    <div class="screen-content">
+        <div class="logo">
+            <img src="{{logo}}" alt="">
+        </div>
+        <p class="slogan">
+            Increase Chain, <br>
+            Decrease Headache
+        </p>
+    </div>
+    <div class="clearfix"></div>
+    <div class="screen-bottom-content">
+        <div class="login-panel">
+            <p>Enter your <span>Phone Number</span> &amp; <span>Password</span></p>
+            <form [formGroup]="loginForm" (ngSubmit)="userLogin();">
+                <div class="form-group">
+                    <span class="text-danger alert-fld-msg"
+                        *ngIf="(loginFC.username.touched || submitted) && loginFC.username.errors?.required">
+                        Please enter your Registered Mobile no.
+                    </span>
+                    <mat-form-field>
+                        <input type="number" formControlName="username" class="fld" matInput placeholder="Enter Mobile no" value="">
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <span class="text-danger alert-fld-msg"
+                        *ngIf="(loginFC.password.touched || submitted) && loginFC.password.errors?.required">
+                        Please enter your password
+                    </span>
+                    <mat-form-field>
+                        <input matInput formControlName="password" placeholder="Enter your password" [type]="hide ? 'password' : 'text'">
+                        <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </div>
+                <p class="float-right forget-pass"><a routerLink="/User/ForgetPassword">Forget Password?</a></p>
+                <button type="submit" [class.spinner]="loading" [disabled]="loading" class="btn btn-warning signin-btn">Login</button>
+            </form>
+            <h5>Don't have account? Want to <a routerLink="/User/Register">Sign Up</a></h5>
+            <div class="help">
+                <a routerLink="/Contents">
+                    <span class="material-icons">contact_support</span> Help
+                </a>
+            </div>
+        </div>
+    </div>
+  </section>
+</ion-content>

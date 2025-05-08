@@ -1,0 +1,162 @@
+<ion-content [fullscreen]="true">  
+  <section class="main-page">
+      <div class="overlay-loading" *ngIf="pageLoading">
+          <div class="load">
+              <span class="spinner"></span> Loading...
+          </div>
+      </div>
+      <header class="header-strip">
+          <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+            <span class="title txt">Dashboard</span>
+          </ion-buttons>
+      </header>
+      
+      <section class="body-content">
+          <div class="tab">
+              <ul>
+                  <li routerLink="../UploadByMe">Upload By Me</li>
+                  <li class="active">Shared By Me</li>
+                  <li routerLink="../SharedWithMe">Shared With Me</li>
+              </ul>
+          </div>
+          <main>
+              <div class="main-body-scroll">
+                  <div class="content-body">
+                      <div class="contact-list shared-list">
+                          <div class="loading" *ngIf="showloader">
+                              <div class="load">
+                                  <span class="spinner"></span>
+                              </div>
+                          </div>
+                          <div class="no-data" *ngIf="noData">
+                              <h5>No Data Found</h5>
+                              <p class="lead">Share products with anyone</p>
+                          </div>
+                          <ul>
+                              <li *ngFor="let pSbMe of productSharedByMeList;">
+                                  <div class="shared-row" [routerLink]="['/Groups/GroupDetails', pSbMe.groupId]">
+                                      <div class="contact-icon">{{pSbMe.groupName | charFilter}}</div>
+                                      <div class="contact">
+                                          <h6 class="contact-name">{{pSbMe.groupName}}</h6>
+                                          <p class="no">Total Member: {{pSbMe.totalMembers}}</p>
+                                      </div>
+                                      <!-- // | mDateFilter:pSbMe.createdOn:pSbMe.timezone  -->
+                                      <span *ngIf="!!pSbMe.multiple" class="badge badge-info mr-2 mt-4">*{{pSbMe.multiple}}</span>
+                                      <p class="date">{{pSbMe.createdOn | mDateFilter:pSbMe.timezone:'Do MMMM, YYYY, hh:mm A'}}</p>
+                                  </div>
+                                  <div class="shared-row">
+                                      <div class="product-list">
+                                          <ul class="pt-0">
+                                              <li *ngFor="let prod of pSbMe.images; let i = index;"(click)="showSharedByMePDPopup(pSbMe.productId, pSbMe.groupId, pSbMe.multiple)">                                    
+                                                  <img src="{{thumbnailPath}}{{prod.image}}" default="/assets/img/no-pro.jpg" alt="">
+                                                  <span class="more" *ngIf="i+1 == pSbMe.images.length && pSbMe.productId.length > 6">+{{pSbMe.productId.length -5}}</span>
+                                              </li>
+                                          </ul>
+                                      </div>
+                                  </div>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+          </main>
+      </section>
+  </section>  
+  
+  <div class="full-screen-popup" *ngIf="showGroupPopup">
+      <div class="inr-content">
+          <div class="strip-bar">
+              <i class="material-icons" (click)="hideGroupPopup()">arrow_back_ios</i>
+              <span class="heading">
+                  Share with Groups
+              </span> 
+          </div>
+          <div class="main-content">
+              <div class="contact-list">
+                  <div class="no-data" *ngIf="noData">
+                      <h5>No Data Found</h5>
+                      <p class="lead">Share products with anyone</p>
+                  </div>
+                  <ul>
+                      <li class="border-0" *ngIf="showloader">
+                          <div class="loading">
+                              <div class="load">
+                                  <span class="spinner"></span>
+                              </div>
+                          </div>
+                      </li>
+                      <li *ngFor="let g of groupList | sortBy:'asc':'name'; let i = index"
+                          [ngClass]="{'itemSelect': selectGroup.includes(g.id)}"
+                          (click)="selectGroupForShare(g.id)">
+                          <div class="contact-icon">{{g.name | charFilter}}</div>
+                          <div class="contact">
+                              <h6 class="contact-name">{{g.name}}</h6>
+                              <p class="no">{{g.totalMembers}} Members</p>
+                          </div>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+          
+          <div class="float-icon" (click)="sharePWGroup()">
+              <i class="material-icons" [class.spinner]="loading" [class.disabled]="loading">send</i>
+          </div>
+      </div>
+  </div>
+  
+  <div class="compo-popup" *ngIf="sharedByMePDPopup">
+      <div class="inr-content">
+          <header class="header-strip">
+              <i class="material-icons" style="width:5%;" (click)="hideSharedByMePDPopup()">arrow_back_ios</i>
+              <div class="title" style="width:25%; text-align:left;" *ngIf="!!sharedByMeProductDetails && sharedByMeProductDetails.length > 0">{{sharedByMeProductDetails.length}} Photos</div>
+              <div class="right-icon" style="width:70%;">
+                  <span *ngIf="selectedImgCheck">
+                      <span class="remove-icon icon" (click)="deleteGProducts()">
+                          <i class="material-icons">delete_forever</i>
+                      </span>
+                      <span class="share-icon icon" (click)="shareGroupPop();">
+                          <i class="material-icons">group_add</i>
+                      </span>
+                  </span>
+                  <span class="share-icon icon" *ngIf="!!sharedByMeProductDetails" (click)="shareAllSocial(sharedByMeProductDetails);">
+                      <i class="material-icons">share</i>
+                  </span>
+              </div>
+          </header>
+          <section class="body-content">
+              <div class="product-details-list">
+                  <ul class="two-col">
+                      <div class="loading" *ngIf="showloader">
+                          <div class="load">
+                              <span class="spinner"></span>
+                          </div>
+                      </div>
+                      <div class="no-data" *ngIf="noData">
+                          <h5>No Data Found</h5>
+                      </div>
+                      <li *ngFor="let prod of sharedByMeProductDetails; let i = index;">
+                          <span *ngIf="checkImg" class="checkbox-select">
+                              <mat-checkbox (change)="selectImg(prod.id)"></mat-checkbox>
+                          </span>
+                          <img src="{{imagePath}}{{prod.image}}" (click)="clickedImg()" default="/assets/img/no-pro.jpg" alt="">
+                          <div class="product-info">
+                              <div class="left">
+                                  <p class="code">Code: <b>{{brannC}}{{prod.price}}</b></p>
+                                  <p class="code" *ngIf="!!sbyMeMulti">Price: <b>INR{{(sbyMeMulti * prod.price)}}</b></p>
+                              </div>
+                          </div>
+                          <div class="icon-list">
+                              <div class="icon-list">
+                                  <span class="share-icon icon" (click)="shareSocial(prod, sbyMeMulti)">
+                                      <i class="material-icons">share</i>
+                                  </span>                               
+                              </div>
+                          </div>
+                      </li>
+                  </ul>
+              </div>
+          </section>
+      </div>
+  </div>
+</ion-content>

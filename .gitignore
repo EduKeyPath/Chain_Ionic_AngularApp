@@ -1,0 +1,54 @@
+# Node modules
+node_modules/
+
+# Compiled output
+www/
+dist/
+build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+.env.*
+
+# Angular build files
+.angular/
+.angular-cache/
+
+# Ionic specific
+ios/
+android/
+plugins/
+platforms/
+resources/
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Capacitor
+capacitor.config.ts
+capacitor.config.json
+
+# Webpack
+webpack-stats.json
+
+# Temporary files
+tmp/
+temp/
+
+# Coverage
+coverage/
+
+# Mac Hidden Files
+*.DS_Store

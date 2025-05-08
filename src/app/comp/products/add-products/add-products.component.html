@@ -1,0 +1,68 @@
+<ion-content [fullscreen]="true">  
+  <section class="main-page">
+      <!-- <div class="overlay-loading" *ngIf="pageLoading">
+          <div class="load">
+              <span class="spinner"></span> Loading...
+          </div>
+      </div> -->
+      <header class="header-strip">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+            <span class="title txt">Add Products</span>
+        </ion-buttons>
+      </header>
+      <section class="body-content">
+          <main>
+              <div class="upload-pic-body">
+                  <div class="upload-pic-box">
+                      <form [formGroup]="upoladProductsForm" (ngSubmit)="uploadProducts()">
+                          <div class="form-group mb-0">
+                              <mat-form-field>
+                                  <mat-label>Uploading type</mat-label>
+                                  <mat-select formControlName="groupId">
+                                      <mat-option value="0">Only Upload</mat-option>
+                                      <mat-option *ngFor="let uType of groupList" [value]="uType.id">
+                                          {{uType.name}}
+                                      </mat-option>
+                                  </mat-select>
+                              </mat-form-field>
+                          </div>
+                          <div class="form-group form-check">
+                              <label class="form-check-label normal">
+                                  <mat-checkbox checked="priceChecked" (click)="changeChbxValue(priceChecked)"> Add Price in Products</mat-checkbox>
+                              </label>
+                          </div>
+                          <div class="form-group">
+                              <span class="text-danger alert-fld-msg" 
+                                  *ngIf="(aPF.file.touched || submitted) && aPF.file.invalid">
+                                  <span *ngIf="aPF.file.errors.required">File is required.</span>                                
+                              </span>
+                              <span class="text-danger alert-fld-msg">
+                                  {{imageError}}
+                              </span>
+                              <label class="upload-label">
+                                  <i class="material-icons">backup</i> <span class="txt">Upload Image</span>
+                                  <input formControlName="file" id="file" accept="image/*" type="file" class="form-control" multiple="multiple" (change)="onFileChange($event)" />
+                              </label>
+                          </div>
+                          <p class="text-danger alert-fld-msg" *ngIf="loading">Please wait while upload the image on server...</p>
+                          <div class="upload-btn">
+                              <button type="submit" [class.spinner]="loading" [disabled]="loading" class="btn btn-warning signin-btn">Upload Picture</button>
+                          </div>
+                      </form>
+                      <div class="process-product-list">
+                          <div class="product-list">
+                              <ul class="p-0">
+                                  <li *ngFor="let img of images; let i = index;">
+                                      <img [src]="img.imgUrl" default="/assets/img/no-pro.jpg" />
+                                      <input type="number" name="price" [(ngModel)]="img.price" #price="ngModel"  *ngIf="priceChecked == true" required class="fld" placeholder="Product Price">
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </main>
+      </section>
+  </section>  
+</ion-content>

@@ -1,0 +1,45 @@
+<ion-content [fullscreen]="true">  
+  <section class="main-page">
+    <header class="header-strip">
+      <div class="search-bar" *ngIf="searchbar">
+          <i class="material-icons" (click)="hideSearchBar();">arrow_back_ios</i>
+          <input type="text" class="fld" (keyup)="contactFilter($event)" placeholder="Search">
+      </div>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+        <span class="title txt">Contact List</span>
+      </ion-buttons>
+      <div class="right-icon">
+        <i class="material-icons" (click)="showSearchBar();">search</i>
+      </div>
+  </header>
+    <section class="body-content">
+        <main class="contact-page">
+            <div class="contact-list">
+                <ul>
+                    <li>
+                        <div class="contact-icon"><img src="assets/img/no-img.jpg" alt="" /></div>
+                        <div class="contact">
+                            <h6 class="contact-name">Contacts</h6>
+                            <p class="no">{{mobileContactList.length}} Contacts</p>
+                        </div>
+                    </li>
+                    <li class="border-0" *ngIf="showloader">
+                        <div class="loading">
+                            <div class="load">
+                                <span class="spinner"></span>
+                            </div>
+                        </div>
+                    </li>
+                    <li *ngFor="let c of mobileContactList | sortBy:'asc':'displayName'; let i = index;">
+                        <div class="contact-icon">{{c.displayName | charFilter}}</div>
+                        <div class="contact">
+                            <h6 class="contact-name">{{c.displayName}}</h6>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </main>       
+    </section>
+</section>    
+</ion-content>

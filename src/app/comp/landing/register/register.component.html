@@ -1,0 +1,118 @@
+<ion-content [fullscreen]="true">  
+  <section class="screen login-screen login-page">
+    <div class="screen-content">
+        <div class="logo">
+            <img src="{{logo}}" alt="">
+        </div>
+        <p class="slogan">
+            Increase Chain, <br>
+            Decrease Headache
+        </p>
+    </div>
+    <div class="clearfix"></div>
+    <div class="screen-bottom-content">
+        <div class="login-panel">
+            <p>Enter your <span>Personal Information</span> to <span>Register</span></p>
+            <form class="form" [formGroup]="registerForm" (ngSubmit)="userRegister()">
+                <div class="form-group">
+                    <span class="text-danger alert-fld-msg"
+                        *ngIf="(registerFormControl.name.touched || submitted) && registerFormControl.name.errors?.required">
+                        Name is required
+                    </span>
+                    <mat-form-field>
+                        <input type="text" class="fld" formControlName="name" matInput placeholder="Full Name" value="">
+                    </mat-form-field>
+                </div>
+                <!-- <div class="form-group">
+                    <span class="text-danger alert-fld-msg"
+                        *ngIf="(registerFormControl.email.touched || submitted) && registerFormControl.email.errors?.required">
+                        Email is required
+                    </span>
+                    <span class="text-danger alert-fld-msg"
+                        *ngIf="registerFormControl.email.touched && registerFormControl.email.errors?.email">
+                        Enter a valid email address
+                    </span>
+                    <mat-form-field>
+                        <input type="text" formControlName="email" class="fld" matInput placeholder="Enter Email-id" value="">
+                    </mat-form-field>
+                </div> -->
+                <div class="form-group">
+                    <span class="text-danger alert-fld-msg"
+                        *ngIf="(registerFormControl.mobile.touched || submitted) && registerFormControl.mobile.errors?.required">
+                        Valid Mobile no. is required, OTP verification is needed
+                    </span>
+                    <span class="text-danger alert-fld-msg" *ngIf="registerFormControl.mobile.errors?.pattern">
+                        Mobile number not valid, should be 10 digit no.
+                    </span>
+                    <mat-form-field>
+                        <input type="number" formControlName="mobile" class="fld" [pattern]="mobNumberPattern" matInput placeholder="Enter Mobile no" value="">
+                    </mat-form-field>
+                </div>
+                <!-- <div class="form-group">
+                    <label>User Name</label>
+                    <input type="text" class="form-control" formControlName="username">
+                    <span class="text-danger alert-fld-msg"
+                        *ngIf="(registerFormControl.username.touched || submitted) && registerFormControl.username.errors?.required">
+                        User Name is required
+                    </span>
+                    <span class="text-danger alert-fld-msg"
+                        *ngIf="registerFormControl.username.touched && registerFormControl.username.errors?.userNameNotAvailable">
+                        User Name is not available
+                    </span>
+                </div> -->
+                <div class="form-group">
+                    <span class="text-danger alert-fld-msg"
+                        *ngIf="(registerFormControl.password.touched || submitted) && registerFormControl.password.errors?.required">
+                        Password is required
+                    </span>
+                    <span class="text-danger alert-fld-msg"
+                        *ngIf="registerFormControl.password.touched && registerFormControl.password.errors?.invalidPassword">
+                        Password should have minimum 8 characters, at least 1 uppercase letter, 1 lowercase
+                        letter, 1 special character and 1 number
+                    </span>
+                    <mat-form-field>
+                        <input matInput formControlName="password" placeholder="Enter your password" [type]="hide ? 'password' : 'text'">
+                        <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <span class="text-danger alert-fld-msg"
+                        *ngIf="(registerFormControl.confirmPassword.touched || submitted)&& registerFormControl.confirmPassword.errors?.required">
+                        Confirm Password is required
+                    </span>
+                    <span class="text-danger alert-fld-msg"
+                        *ngIf="registerFormControl.confirmPassword.touched && registerFormControl.confirmPassword.errors?.passwordMismatch">
+                        Passwords doesnot match
+                    </span>
+                    <mat-form-field>
+                        <input matInput formControlName="confirmPassword" placeholder="Confirm password" [type]="reHide ? 'password' : 'text'">
+                        <button type="button" mat-icon-button matSuffix (click)="reHide = !reHide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="reHide">
+                            <mat-icon>{{reHide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </div>
+                <div class="form-group form-check">
+                    <!-- <p class="text-danger alert-fld-msg"
+                        *ngIf="(registerFormControl.acceptTerms.touched || submitted) && registerFormControl.acceptTerms.errors?.required">
+                        Please accept the Terms &amp; Conditions
+                    </p> -->
+                    <label class="form-check-label terms">
+                        By submitting to this form, you agree to the <a routerLink="/Contents/Terms">Terms & Condition</a> of Chain.
+                    </label>                    
+                </div>
+                <div class="form-group">
+                    <button type="submit" [class.spinner]="loading" [disabled]="loading" class="btn btn-warning signin-btn">Register</button>
+                </div>
+            </form>
+            <h5>Already have account? Want to <a routerLink="/User/Login">Sign In</a></h5>
+            <div class="help">
+                <a routerLink="/Contents">
+                    <span class="material-icons">contact_support</span> Help
+                </a>
+            </div>
+        </div>
+    </div>
+  </section>
+</ion-content>

@@ -1,0 +1,25 @@
+<ion-content [fullscreen]="true">  
+  <section class="main-page">
+    <header class="header-strip">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+            <span class="title txt">Terms & Conditions</span>
+        </ion-buttons>
+    </header>
+    <section class="body-content">
+        <main>
+            <div class="loading" *ngIf="showloader">
+                <div class="load">
+                    <span class="spinner"></span>
+                </div>
+            </div>
+            <div class="no-data" *ngIf="!!termsContent && termsContent == ''">
+                <h5>No Data Found</h5>
+            </div>
+            <div class="content-body" *ngIf="!!termsContent">
+                <div [innerHtml]="termsContent | safe"></div>
+            </div>
+        </main>
+    </section>
+</section>
+</ion-content>

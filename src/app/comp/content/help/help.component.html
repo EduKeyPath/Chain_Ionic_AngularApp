@@ -1,0 +1,32 @@
+<ion-content [fullscreen]="true"> 
+  <section class="main-page">
+      <header class="header-strip">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+            <span class="title txt">Help</span>
+        </ion-buttons>
+      </header>
+      <section class="body-content help-content">
+          <main>
+              <div class="loading" *ngIf="showloader">
+                  <div class="load">
+                      <span class="spinner"></span>
+                  </div>
+              </div>
+              <div class="no-data" *ngIf="!!helpContent && helpContent.length == 0">
+                  <h5>No Data Found</h5>
+              </div>
+              <mat-accordion>
+                  <mat-expansion-panel *ngFor="let help of helpContent" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                      <mat-expansion-panel-header>
+                          <mat-panel-title>{{help.title}}</mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <div class="content-body">
+                          <div [innerHtml]="help.desc | safe"></div>
+                      </div>
+                  </mat-expansion-panel>                
+              </mat-accordion>
+          </main>
+      </section>
+  </section>
+</ion-content>

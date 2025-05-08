@@ -1,0 +1,172 @@
+<ion-content [fullscreen]="true">  
+  <section class="main-page">
+      <div class="overlay-loading" *ngIf="pageLoading">
+          <div class="load">
+              <span class="spinner"></span> Loading...
+          </div>
+      </div>
+      <header class="header-strip">
+          <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+            <span class="title txt">
+                <ng-template #vendorName>
+                    {{vendorName}}
+                </ng-template>
+                <span *ngIf="!!brandName else vendorName">{{brandName}}</span>
+            </span>
+          </ion-buttons>
+          <div class="right-icon">
+              <span class="icon" routerLink="/Products/Cart">
+                  <span class="counter">{{totalCartItems}}</span>
+                  <i class="material-icons">shopping_basket</i>
+              </span>
+              <i class="material-icons" (click)="showVendorDPopup()">contacts</i>
+          </div>
+      </header>
+      <section class="body-content">
+          <main>
+              <div class="contact-list shared-list">
+                  <div class="loading" *ngIf="showloader">
+                      <div class="load">
+                          <span class="spinner"></span>
+                      </div>
+                  </div>
+                  <div class="no-data" *ngIf="noData">
+                      <h5>No Data Found</h5>
+                      <p class="lead">No One Share products with you yet</p>
+                  </div>
+                  <ul>
+                      <li *ngFor="let prod of shareWMList">
+                          <h6 class="date-time">{{prod.createdOn | mDateFilter:prod.timezone:'Do MMMM, YYYY, hh:mm A'}}</h6>
+                          <div class="product-list">
+                              <ul class="pt-0">
+                                  <li *ngFor="let img of prod.images; let i = index;" (click)="showproductDetails(prod.productId, prod.multiple, prod.brand_code)"> 
+                                      <img src="{{thumbnailPath}}{{img.image}}" default="/assets/img/no-pro.jpg" alt="">
+                                      <span class="more" *ngIf="prod.productId.length > 6 && i+1 == prod.images.length">+{{prod.productId.length - 5}}</span>
+                                  </li>
+                              </ul>
+                          </div>
+                      </li>
+                  </ul>
+              </div>     
+          </main>
+      </section>
+  </section>
+  
+  <div class="compo-popup" *ngIf="productDetailsPopup">    
+      <div class="inr-content">
+          <header class="header-strip">
+              <div class="arrow" style="width:5%;" (click)="hideProductDetails()">
+                  <i class="material-icons">arrow_back_ios</i>
+              </div>
+              <div class="title" style="width:25%; text-align:left;" *ngIf="!!productDetails && productDetails.length > 0">{{productDetails.length}} Photos</div>
+              <div class="right-icon" style="width:70%;">
+                  <i class="material-icons" (click)="shareAllSocial(productDetails)">share</i>
+                  <i class="material-icons" (click)="downloadAll(productDetails)">cloud_download</i>
+                  <i class="material-icons" (click)="saveImage(productDetails)">save</i>
+                  <span class="icon" routerLink="/Products/Cart">
+                      <span class="counter">{{totalCartItems}}</span>
+                      <i class="material-icons">shopping_basket</i>
+                  </span>
+              </div>
+          </header>
+          <section class="body-content">
+              <div class="product-details-list">
+                  <ul class="two-col">
+                      <div class="loading" *ngIf="showloader">
+                          <div class="load">
+                              <span class="spinner"></span>
+                          </div>
+                      </div>
+                      <div class="no-data" *ngIf="noData">
+                          <h5>No Data Found</h5>
+                      </div>
+                      <li *ngFor="let prod of productDetails">
+                          <img src="{{imagePath}}{{prod.image}}" default="/assets/img/no-pro.jpg" alt="">
+                          <div class="product-info">
+                              <div class="left">
+                                  <p class="code">Code : <b>{{brandCode}}{{prod.price}}</b></p>
+                                  <p class="price">Price : <b>INR{{multipleCode * prod.price}}</b></p>
+                              </div>
+                          </div>
+                          <div class="icon-list">
+                              <div class="icon-list">
+                                  <span class="query-icon icon">
+                                      <i class="material-icons">question_answer</i>
+                                  </span>
+                                  <!-- <button class="btn-primary" onclick="window.plugins.socialsharing.share('Code :'+brandCode.toString(), 'Price : 1000', 'http://chain.indian-collection.com/uploads/product/5ee74d4660217.jpeg', 'http://cwa.indian-collection.com')">Share</button>
+                                  <br/> -->
+                                  <span class="share-icon icon" (click)="shareSocial(prod)">
+                                      <i class="material-icons">share</i>
+                                  </span> 
+                                  <span *ngIf="!!prod.price && prod.price > 0" class="saved-icon icon" (click)="addToCart(prod, multipleCode, imagePath, brandCode)">
+                                      <i class="material-icons">add_shopping_cart</i>
+                                  </span>
+                                  <span *ngIf="!!prod.price && prod.price > 0" class="buy-icon icon" (click)="buyNow(prod, multipleCode, imagePath, brandCode)">
+                                      <i class="material-icons">local_mall</i>
+                                  </span>                                
+                              </div>
+                          </div>
+                      </li>
+                  </ul>
+              </div>
+          </section>
+      </div>
+  </div>
+  
+  <div class="full-screen-popup" *ngIf="vendorDPopup">
+      <div class="inr-content">
+          <div class="strip-bar">
+              <i class="material-icons" (click)="hideVendorDPopup()">arrow_back_ios</i>
+              <span class="heading">
+                  Vendor Details
+              </span> 
+          </div>
+          <div class="main-content">
+              <div class="view-details">
+                  <div class="card">
+                      <div class="card-inr">
+                          <table>
+                              <tr>
+                                  <td><label>Rating</label></td>
+                                  <td>
+                                      <div class="rating-body">
+                                          <span class="rating">
+                                              <i class="material-icons active">star</i>
+                                              <i class="material-icons active">star</i>
+                                              <i class="material-icons active">star</i>
+                                              <i class="material-icons active">star</i>
+                                              <i class="material-icons">star</i>
+                                          </span>
+                                          <span class="txt">(4 Rating / 35 Review)</span>
+                                      </div>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td><label>Name</label></td>
+                                  <td>Banty Shaw</td>
+                              </tr>
+                              <tr>
+                                  <td><label>Brand Name</label></td>
+                                  <td></td>
+                              </tr>
+                              <tr>
+                                  <td><label>Brand Code</label></td>
+                                  <td>CZ</td>
+                              </tr>
+                              <tr>
+                                  <td><label>Contact No</label></td>
+                                  <td></td>
+                              </tr>
+                              <tr>
+                                  <td><label>Aaddress</label></td>
+                                  <td></td>
+                              </tr>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</ion-content>

@@ -1,0 +1,53 @@
+<ion-content [fullscreen]="true">  
+  <section class="main-page">
+      <header class="header-strip">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+            <span class="title txt">Support / Suggestion</span>
+        </ion-buttons>
+      </header>
+      <section class="body-content">
+          <main>
+              <div class="contact-form">
+                  <form name="form" (ngSubmit)="contactForm.form.valid && contactUs()" #contactForm="ngForm">
+                      <div class="form-group">
+                          <span *ngIf="contactForm.submitted && name.invalid" class="text-danger alert-fld-msg">
+                              <div *ngIf="name.errors.required">Name is required</div>
+                          </span>
+                          <mat-form-field>
+                              <input type="text" name="name" [(ngModel)]="profileData.name" #name="ngModel" [ngClass]="{ 'is-invalid': contactForm.submitted && name.invalid }" required class="fld" matInput placeholder="Your Name">
+                          </mat-form-field>
+                      </div>
+                      <div class="form-group">
+                          <span *ngIf="contactForm.submitted && mobile.invalid" class="text-danger alert-fld-msg">
+                              <div *ngIf="mobile.errors.required">Mobile no. is required</div>
+                          </span>
+                          <mat-form-field>
+                              <input type="number" name="mobile" [(ngModel)]="profileData.mobile" #mobile="ngModel" [ngClass]="{ 'is-invalid': contactForm.submitted && mobile.invalid }" required class="fld" matInput placeholder="Your Contact no">
+                          </mat-form-field>
+                      </div>
+                      <div class="form-group">
+                          <mat-form-field>
+                              <input type="email" name="email" [(ngModel)]="profileData.email" #email="ngModel"  class="fld" matInput placeholder="Your Email-id">
+                          </mat-form-field>
+                      </div>
+                      <div class="form-group">
+                          <mat-form-field>
+                              <textarea matInput name="address" [(ngModel)]="profileData.address" #address="ngModel" class="fld" placeholder="Full Address"></textarea>
+                          </mat-form-field>
+                      </div>
+                      <div class="form-group">
+                          <span *ngIf="contactForm.submitted && message.invalid" class="text-danger alert-fld-msg">
+                              <div *ngIf="message.errors.required">Your Message / Suggestion / Feedback is required</div>
+                          </span>
+                          <mat-form-field>
+                              <textarea matInput name="message" [(ngModel)]="profileData.message" #message="ngModel" [ngClass]="{ 'is-invalid': contactForm.submitted && message.invalid }" required class="fld" placeholder="Your Message / Suggestion / Feedback"></textarea>
+                          </mat-form-field>
+                      </div>
+                      <button type="submit" [class.spinner]="loading" [disabled]="loading" class="btn btn-warning signin-btn">Submit</button>
+                  </form>
+              </div>
+          </main>
+      </section>
+  </section>
+</ion-content>

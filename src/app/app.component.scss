@@ -1,0 +1,20 @@
+ion-menu ion-content {
+  --background: var(--ion-item-background, var(--ion-background-color, #fff));
+}
+.list-md {padding-top: 0;}
+ion-menu.md ion-item {    width: 97%;border-radius: 0 50px 50px 0;}
+ion-menu.md ion-item.selected {
+ --background: #ffdb8d42;
+ color: #453677;
+    font-weight: 500;
+}
+
+ion-menu.md ion-item.selected ion-icon {
+  color: #5f4d99;
+}
+ion-menu.ios ion-item.selected ion-icon {
+  color: var(--ion-color-primary);
+}
+ion-item {
+  --min-height :40px;
+}

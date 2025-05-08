@@ -1,0 +1,25 @@
+<ion-content [fullscreen]="true">  
+  <section class="main-page">
+    <header class="header-strip">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+            <span class="title txt">Privacy Policy</span>
+        </ion-buttons>
+    </header>
+    <section class="body-content">
+        <main>
+            <div class="loading" *ngIf="showloader">
+                <div class="load">
+                    <span class="spinner"></span>
+                </div>
+            </div>
+            <div class="no-data" *ngIf="!!privacyContent && privacyContent == ''">
+                <h5>No Data Found</h5>
+            </div>
+            <div class="content-body" *ngIf="!!privacyContent">
+                <div [innerHtml]="privacyContent | safe"></div>
+            </div>
+        </main>
+    </section>
+</section>
+</ion-content>

@@ -1,0 +1,334 @@
+<ion-content [fullscreen]="true">  
+  <section class="main-page">
+    <!-- <div class="overlay-loading" *ngIf="pageLoading">
+        <div class="load">
+            <span class="spinner"></span> Loading...
+        </div>
+    </div> -->
+    <header class="header-strip">
+        <i class="material-icons" routerLink="/Orders/ReceivedOrders/">arrow_back_ios</i>
+        <div class="title text-left w-100">Received Order Details</div>
+    </header>
+    <section class="body-content">
+        <main>
+            <div class="loading" *ngIf="showloader">
+                <div class="load">
+                    <span class="spinner"></span>
+                </div>
+            </div>
+            <div class="order-details" *ngIf="!!oD">                
+                <div class="orders">
+                    <h3 class="mt-0">Order Details</h3>
+                    <div class="card">
+                        <div class="card-inr">
+                            <div class="view-details">
+                                <span *ngIf="oD.status == 'New'" class="badge badge-success">{{oD.status}}</span>
+                                <span *ngIf="oD.status == 'Cancelled'" class="badge badge-danger">{{oD.status}}</span>
+                                <span *ngIf="oD.status == 'Rejected'" class="badge badge-secondary">{{oD.status}}</span>
+                                <span *ngIf="oD.status == 'Approved' && oD.paymentStatus == 'Unpaid'" class="badge badge-danger">{{oD.paymentStatus}}</span>
+                                <span *ngIf="oD.status == 'Shipped'" class="badge badge-info">{{oD.status}}</span>
+                                <span *ngIf="oD.status == 'Delivered'" class="badge badge-secondary">{{oD.status}}</span>
+                                <span *ngIf="oD.paymentStatus == 'Pending'" class="badge badge-warning">Paid, Waiting for Approval</span>
+                                <span *ngIf="oD.status == 'Approved' && oD.paymentStatus == 'Paid'" class="badge badge-info">InProcess</span>
+                                <table>
+                                    <tr>
+                                        <td><label>Order Id</label></td>
+                                        <td>{{oD.orderNumber}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Order Date</label></td>
+                                        <td>{{oD.createdOn | mDateFilter:oD.timezone:'Do MMMM, YYYY, hh:mm A'}}</td>
+                                    </tr>
+                                    <tr *ngIf="!!oD.reason_cancel">
+                                        <td><label>Cancel Order</label></td>
+                                        <td>{{oD.reason_cancel}}</td>
+                                    </tr>
+                                    <tr *ngIf="!!oD.reason_reject">
+                                        <td><label>Reject Order</label></td>
+                                        <td>{{oD.reason_reject}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tracking-details" *ngIf="oD.status == 'Shipped' || oD.status == 'Delivered'">
+                    <h3>Tracking Details</h3>
+                    <div class="card">
+                        <div class="card-inr">
+                            <div class="view-details">
+                                <table>
+                                    <tr>
+                                        <td><label>Courier Name</label></td>
+                                        <td class="capital">{{oD.courier}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Tracking Code</label></td>
+                                        <td>{{oD.trackingId}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Shipping Date</label></td>
+                                        <td>{{oD.shippedOn | mDateFilter:oD.timezone:'Do MMMM, YYYY, hh:mm A'}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Delivered Date</label></td>
+                                        <td>{{oD.deliveredOn | mDateFilter:oD.timezone:'Do MMMM, YYYY, hh:mm A'}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="payment-details view-details" *ngIf="!!oD && oD.payment.length > 0">
+                    <h3>Payment Details</h3>                    
+                    <div class="card" *ngFor="let pay of oD.payment">
+                        <div class="card-inr" *ngIf="pay.modeOfPayment == 'UPI'">
+                            <h4>{{pay.modeOfPayment}}</h4>
+                            <table>
+                                <tr>
+                                    <td><label>UPI Name</label></td>
+                                    <td class="capital">{{pay.upiName}}</td>
+                                </tr>
+                                <tr>
+                                    <td><label>UPI No</label></td>
+                                    <td>{{pay.upiNo}}</td>
+                                </tr>
+                                <tr>
+                                    <td><label>Payment Date</label></td>
+                                    <td>{{pay.createdOn | mDateFilter:oD.timezone:'Do MMMM, YYYY, hh:mm A'}}</td>
+                                </tr>
+                                <tr>
+                                    <td><label>Transaction no.</label></td>
+                                    <td>{{pay.transactionId}}</td>
+                                </tr>
+                            </table>
+                            <div class="pay-options mt-2" *ngIf="pay.status == 'Pending'">
+                                <button type="submit" (click)="paymentReject(pay.id)" class="btn btn-warning cancel-btn toosmall-btn mr-2">Reject</button>
+                                <button type="submit" (click)="paymentVerify(pay.id)" class="btn btn-warning toosmall-btn">Received</button>
+                            </div>
+                        </div>
+                        <div class="card-inr" *ngIf="pay.modeOfPayment == 'Bank Transfer'">
+                            <h4>{{pay.modeOfPayment}}</h4>
+                            <table>
+                                <tr>
+                                    <td><label>Bank Name</label></td>
+                                    <td class="capital">{{pay.bankName}}</td>
+                                </tr>                                
+                                <tr>
+                                    <td><label>A/C No</label></td>
+                                    <td>{{pay.accountNo}}</td>
+                                </tr>
+                                <tr>
+                                    <td><label>Payment Date</label></td>
+                                    <td>{{pay.createdOn | mDateFilter:oD.timezone:'Do MMMM, YYYY, hh:mm A'}}</td>
+                                </tr>
+                                <tr>
+                                    <td><label>Transaction no.</label></td>
+                                    <td>{{pay.transactionId}}</td>
+                                </tr>
+                            </table>
+                            <div class="pay-options mt-2" *ngIf="pay.status == 'Pending'">
+                                <button type="submit" (click)="paymentReject(pay.id)" class="btn btn-warning cancel-btn toosmall-btn mr-2">Reject</button>
+                                <button type="submit" (click)="paymentVerify(pay.id)" class="btn btn-warning toosmall-btn">Received</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="customer-details">
+                    <h3>Customer Details</h3>
+                    <div class="card">
+                        <div class="card-inr">
+                            <div class="view-details">
+                                <table>
+                                    <tr *ngIf="!!oD.customerBrandName">
+                                        <td><label>Brnad Name</label></td>
+                                        <td class="capital">{{oD.customerBrandName}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Name</label></td>
+                                        <td class="capital">{{oD.customerName}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Mobile</label></td>
+                                        <td>{{oD.customerMobile}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="Shippiing-details">
+                    <h3>Shipping Details</h3>
+                    <div class="card">
+                        <div class="card-inr">
+                            <div class="view-details">
+                                <table>
+                                    <tr>
+                                        <td><label>Name</label></td>
+                                        <td class="capital">{{oD.shipping.name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Mobile</label></td>
+                                        <td>{{oD.shipping.mobile}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Alt Mobile</label></td>
+                                        <td>{{oD.shipping.altMobile}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Email</label></td>
+                                        <td>{{oD.shipping.email}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Address</label></td>
+                                        <td>{{oD.shipping.address}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Country</label></td>
+                                        <td>{{oD.shipping.country}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>State</label></td>
+                                        <td>{{oD.shipping.state}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>City</label></td>
+                                        <td>{{oD.shipping.city}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Pincode</label></td>
+                                        <td>{{oD.shipping.pincode}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Message</label></td>
+                                        <td>{{oD.shipping.description}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-cart-list">
+                    <h3>Product List</h3>
+                    <div class="card" *ngFor="let prod of oD.list">
+                        <div class="product-row">
+                            <div class="product-img">
+                                <img src="{{thumbnailPath}}{{prod.image}}" default="/assets/img/no-pro.jpg" alt="">
+                            </div>
+                            <div class="product-info">
+                                <p class="code">Code : <b>{{oD.vendorCode}}{{prod.price}}</b></p>
+                                <p class="price">Price : <b>{{prod.currency}}{{prod.price}}</b></p>
+                                <p class="qty">Qty : <b>{{prod.qty}}</b></p>
+                            </div>
+                            <div class="right">
+                                <h6 class="price">{{prod.currency}}{{prod.amount}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-btn-row">
+                    <div class="row">
+                        <div class="col px-2">
+                            <div class="cart-total">
+                                <small>Total Item <b>{{oD.totalItem}}</b></small>
+                                <small>Sub Total <b>{{oD.currency}}{{oD.subtotal}}</b></small>
+                                <small *ngIf="oD.shippingAmount > 0" class="ship">+ <b>{{oD.currency}}{{oD.shippingAmount}}</b> Shipping Charge</small>
+                                <h5 class="total">{{oD.currency}}{{oD.total}}</h5>
+                            </div>
+                        </div>
+                        <div class="col px-2 justify-content-end">
+                            <button type="submit" *ngIf="oD.status == 'New'" (click)="showRejectPopup()" class="btn btn-warning cancel-btn">Reject</button>&nbsp;
+                            <button type="submit" *ngIf="oD.status == 'New'" (click)="showShippingPopup()" class="btn btn-warning">Accept</button>
+                            <button type="button" *ngIf="oD.status == 'Approved' && oD.paymentStatus == 'Unpaid'" class="btn default-btn c-default accept-btn">Accepted</button>
+                            <button type="button" *ngIf="oD.status == 'Rejected'" class="btn btn-secondary default-btn c-default" disabled>Rejected</button>
+                            <button type="button" *ngIf="oD.status == 'Cancelled'" class="btn btn-secondary default-btn c-default" disabled>Cancelled</button>
+                            <button type="submit" *ngIf="oD.status == 'Approved' && oD.paymentStatus == 'Paid'" (click)="showTrackingPopup()" class="btn btn-warning">Tracking</button>
+                            <button type="submit" *ngIf="oD.status == 'Shipped'" (click)="deliverdOrder()" [class.spinner]="loading" [disabled]="loading" class="btn btn-warning">Delivered</button>
+                        </div>
+                    </div>					
+                </div>
+            </div>
+        </main>
+    </section>
+</section>
+
+<div class="small-screen-popup" *ngIf="shippingPopup">
+    <div class="inr-content">
+        <div class="strip-bar">
+            <i class="material-icons" (click)="hideShippingPopup()">arrow_back_ios</i>
+            <span class="heading">
+                Add Shipping Price
+            </span> 
+        </div>
+        <div class="main-content">
+            <form name="form" (ngSubmit)="aSP.form.valid && approvOrder()" #aSP="ngForm">
+                <div class="form-group">
+                    <span *ngIf="aSP.submitted && price.invalid" class="text-danger alert-fld-msg">
+                        <div *ngIf="price.errors.required">Shipping Price is required</div>
+                    </span>
+                    <mat-form-field>
+                        <input type="number" name="price" [(ngModel)]="shippingPrice" #price="ngModel" [ngClass]="{ 'is-invalid': aSP.submitted && price.invalid }" required class="fld" matInput placeholder="Shipping Price">
+                    </mat-form-field>
+                </div>
+                <button type="submit" [class.spinner]="loading" [disabled]="loading" class="btn btn-warning signin-btn small-btn">Send</button>
+            </form>       
+        </div>
+    </div>
+</div>
+
+<div class="small-screen-popup" *ngIf="rejectPopup">
+    <div class="inr-content">
+        <div class="strip-bar">
+            <i class="material-icons" (click)="hideRejectPopup()">arrow_back_ios</i>
+            <span class="heading">
+                Cancel Order
+            </span> 
+        </div>
+        <div class="main-content">
+            <form name="form" (ngSubmit)="cO.form.valid && rejectOrder()" #cO="ngForm">
+                <div class="form-group">
+                    <span *ngIf="cO.submitted && cReason.invalid" class="text-danger alert-fld-msg">
+                        <div *ngIf="cReason.errors.required">Cancellation Reason</div>
+                    </span>
+                    <mat-form-field>
+                        <textarea name="cReason" [(ngModel)]="cancelReason" #cReason="ngModel" [ngClass]="{ 'is-invalid': cO.submitted && cReason.invalid }" required class="fld" matInput placeholder="Cancellation Reason"></textarea>
+                    </mat-form-field>
+                </div>
+                <button type="submit" [class.spinner]="loading" [disabled]="loading" class="btn btn-warning signin-btn small-btn">Send</button>
+            </form>       
+        </div>
+    </div>
+</div>
+
+<div class="small-screen-popup" *ngIf="trackingPopup">
+    <div class="inr-content">
+        <div class="strip-bar">
+            <i class="material-icons" (click)="hideTrackingPopup()">arrow_back_ios</i>
+            <span class="heading">
+                Add Tracking Details
+            </span> 
+        </div>
+        <div class="main-content">
+            <form name="form" (ngSubmit)="aTD.form.valid && addTrackingD()" #aTD="ngForm">
+                <div class="form-group">
+                    <span *ngIf="aTD.submitted && tName.invalid" class="text-danger alert-fld-msg">
+                        <div *ngIf="tName.errors.required">Tracking name is required</div>
+                    </span>
+                    <mat-form-field>
+                        <input type="text" name="tName" [(ngModel)]="tracking.courier" #tName="ngModel" [ngClass]="{ 'is-invalid': aTD.submitted && tName.invalid }" required class="fld" matInput placeholder="Courier name">
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <span *ngIf="aTD.submitted && tNo.invalid" class="text-danger alert-fld-msg">
+                        <div *ngIf="tNo.errors.required">Tracking no. is required</div>
+                    </span>
+                    <mat-form-field>
+                        <input type="text" name="tNo" [(ngModel)]="tracking.trackingId" #tNo="ngModel" [ngClass]="{ 'is-invalid': aTD.submitted && tNo.invalid }" required class="fld" matInput placeholder="Tracking no.">
+                    </mat-form-field>
+                </div>
+                <button type="submit" [class.spinner]="loading" [disabled]="loading" class="btn btn-warning signin-btn small-btn">Send</button>
+            </form>       
+        </div>
+    </div>
+</div>
+</ion-content>

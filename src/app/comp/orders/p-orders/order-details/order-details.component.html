@@ -1,0 +1,383 @@
+<ion-content [fullscreen]="true">  
+  <section class="main-page">
+    <!-- <div class="overlay-loading" *ngIf="pageLoading">
+        <div class="load">
+            <span class="spinner"></span> Loading...
+        </div>
+    </div> -->
+    <header class="header-strip">
+        <i class="material-icons" routerLink="/Orders/PlacedOrders/">arrow_back_ios</i>
+        <div class="title text-left w-100">Placed Order Details</div>
+    </header>
+    <section class="body-content">
+        <main>
+            <div class="loading" *ngIf="showloader">
+                <div class="load">
+                    <span class="spinner"></span>
+                </div>
+            </div>
+            <div class="order-details" *ngIf="!!poD">
+                <div class="orders">
+                    <h3 class="mt-0">Order Details</h3>
+                    <div class="card">
+                        <div class="card-inr">
+                            <div class="view-details">
+                                <span *ngIf="poD.status == 'New'" class="badge badge-success">{{poD.status}}</span>
+                                <span *ngIf="poD.status == 'Cancelled'" class="badge badge-danger">{{poD.status}}</span>
+                                <span *ngIf="poD.status == 'Rejected'" class="badge badge-secondary">{{poD.status}}</span>
+                                <span *ngIf="poD.status == 'Approved' && poD.paymentStatus == 'Unpaid'" class="badge badge-warning">{{poD.status}}</span>
+                                <span *ngIf="poD.status == 'Shipped'" class="badge badge-info">{{poD.status}}</span>
+                                <span *ngIf="poD.status == 'Delivered'" class="badge badge-secondary">{{poD.status}}</span>
+                                <span *ngIf="poD.paymentStatus == 'Pending'" class="badge badge-warning">Paid, Waiting for Approval</span>
+                                <span *ngIf="poD.status == 'Approved' && poD.paymentStatus == 'Paid'" class="badge badge-info">InProcess</span>
+                    
+                                <table>
+                                    <tr>
+                                        <td><label>Order Id</label></td>
+                                        <td>{{poD.orderNumber}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Order Date</label></td>
+                                        <td>{{poD.createdOn | mDateFilter:poD.timezone:'Do MMMM, YYYY, hh:mm A'}}</td>
+                                    </tr>
+                                    <tr *ngIf="!!poD.reason_cancel">
+                                        <td><label>Cancel Order</label></td>
+                                        <td>{{poD.reason_cancel}}</td>
+                                    </tr>
+                                    <tr *ngIf="!!poD.reason_reject">
+                                        <td><label>Reject Order</label></td>
+                                        <td>{{poD.reason_reject}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tracking-details" *ngIf="poD.status == 'Shipped' || poD.status == 'Delivered'">
+                    <h3>Tracking Details</h3>
+                    <div class="card">
+                        <div class="card-inr">
+                            <div class="view-details">
+                                <table>
+                                    <tr>
+                                        <td class="capital"><label>Courier Name</label></td>
+                                        <td>{{poD.courier}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Tracking Code</label></td>
+                                        <td>{{poD.trackingId}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Shipping Date</label></td>
+                                        <td>{{poD.shippedOn | mDateFilter:poD.timezone:'Do MMMM, YYYY, hh:mm A'}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Delivered Date</label></td>
+                                        <td>{{poD.deliveredOn | mDateFilter:poD.timezone:'Do MMMM, YYYY, hh:mm A'}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="payment-details view-details" *ngIf="!!poD && poD.payment.length > 0">
+                    <h3>Payment Details</h3>                    
+                    <div class="card" *ngFor="let pay of poD.payment">
+                        <div class="card-inr" *ngIf="pay.modeOfPayment == 'UPI'">
+                            <h4>{{pay.modeOfPayment}}</h4>
+                            <table>
+                                <tr>
+                                    <td><label>UPI Name</label></td>
+                                    <td class="capital">{{pay.upiName}}</td>
+                                </tr>
+                                <tr>
+                                    <td><label>UPI No</label></td>
+                                    <td>{{pay.upiNo}}</td>
+                                </tr>
+                                <tr>
+                                    <td><label>Payment Date</label></td>
+                                    <td>{{pay.createdOn | mDateFilter:poD.timezone:'Do MMMM, YYYY, hh:mm A'}}</td>
+                                </tr>
+                                <tr>
+                                    <td><label>Transaction no.</label></td>
+                                    <td>{{pay.transactionId}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="card-inr" *ngIf="pay.modeOfPayment == 'Bank Transfer'">
+                            <h4>{{pay.modeOfPayment}}</h4>
+                            <table>
+                                <tr>
+                                    <td><label>Bank Name</label></td>
+                                    <td class="capital">{{pay.bankName}}</td>
+                                </tr>                                
+                                <tr>
+                                    <td><label>A/C No</label></td>
+                                    <td>{{pay.accountNo}}</td>
+                                </tr>
+                                <tr>
+                                    <td><label>Payment Date</label></td>
+                                    <td>{{pay.createdOn | mDateFilter:poD.timezone:'Do MMMM, YYYY, hh:mm A'}}</td>
+                                </tr>
+                                <tr>
+                                    <td><label>Transaction no.</label></td>
+                                    <td>{{pay.transactionId}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="vendor-details">
+                    <h3>Vendor Details</h3>
+                    <div class="card">
+                        <div class="card-inr">
+                            <div class="view-details">
+                                <table>
+                                    <tr *ngIf="!!poD.vendorBrandName">
+                                        <td><label>Brnad Name</label></td>
+                                        <td class="capital">{{poD.vendorBrandName}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Name</label></td>
+                                        <td class="capital">{{poD.vendorName}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Mobile</label></td>
+                                        <td>{{poD.vendorMobile}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="Shippiing-details">
+                    <h3>Shipping Details</h3>
+                    <div class="card">
+                        <div class="card-inr">
+                            <div class="view-details">
+                                <table>
+                                    <tr>
+                                        <td><label>Name</label></td>
+                                        <td class="capital">{{poD.shipping.name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Mobile</label></td>
+                                        <td>{{poD.shipping.mobile}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Alt Mobile</label></td>
+                                        <td>{{poD.shipping.altMobile}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Email</label></td>
+                                        <td>{{poD.shipping.email}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Address</label></td>
+                                        <td>{{poD.shipping.address}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Country</label></td>
+                                        <td>{{poD.shipping.country}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>State</label></td>
+                                        <td>{{poD.shipping.state}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>City</label></td>
+                                        <td>{{poD.shipping.city}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Pincode</label></td>
+                                        <td>{{poD.shipping.pincode}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label>Message</label></td>
+                                        <td>{{poD.shipping.description}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-cart-list">
+                    <h3>Product List</h3>
+                    <div class="card" *ngFor="let prod of poD.list">
+                        <div class="product-row">
+                            <div class="product-img">
+                                <img src="{{thumbnailPath}}{{prod.image}}" default="/assets/img/no-pro.jpg" alt="">
+                            </div>
+                            <div class="product-info">
+                                <p class="code">Code : <b>{{poD.vendorCode}}{{prod.price}}</b></p>
+                                <p class="price">Price : <b>{{prod.currency}}{{prod.price}}</b></p>
+                                <p class="qty">Qty : <b>{{prod.qty}}</b></p>
+                            </div>
+                            <div class="right">
+                                <h6 class="price">{{prod.currency}}{{prod.amount}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-btn-row">
+                    <div class="row">
+                        <div class="col">
+                            <div class="cart-total">
+                                <small>Total Item <b>{{poD.totalItem}}</b></small>
+                                <small>Sub Total <b>{{poD.currency}}{{poD.subtotal}}</b></small>
+                                <small *ngIf="poD.shippingAmount > 0" class="ship">+ <b>{{poD.currency}}{{poD.shippingAmount}}</b> Shipping Charge</small>
+                                <h5 class="total">{{poD.currency}}{{poD.total}}</h5>
+                            </div>
+                        </div>
+                        <div class="col justify-content-end">
+                            <button type="submit" *ngIf="poD.status == 'New'" (click)="showRejectPopup()" class="btn btn-warning cancel-btn">Cancel</button>                            
+                            <button type="submit" *ngIf="poD.status == 'Approved' && poD.paymentStatus == 'Unpaid'" (click)="showPaymentDPopup()" class="btn btn-warning accept-btn">Pay</button>
+                        </div>
+                    </div>					
+                </div>
+            </div>
+        </main>
+    </section>
+</section>
+
+<div class="small-screen-popup" *ngIf="rejectPopup">
+    <div class="inr-content">
+        <div class="strip-bar">
+            <i class="material-icons" (click)="hideRejectPopup()">arrow_back_ios</i>
+            <span class="heading">
+                Cancel Order
+            </span> 
+        </div>
+        <div class="main-content">
+            <form name="form" (ngSubmit)="cO.form.valid && cancelOrder()" #cO="ngForm">
+                <div class="form-group">
+                    <span *ngIf="cO.submitted && cReason.invalid" class="text-danger alert-fld-msg">
+                        <div *ngIf="cReason.errors.required">Cancellation Reason</div>
+                    </span>
+                    <mat-form-field>
+                        <textarea name="cReason" [(ngModel)]="cancelReason" #cReason="ngModel" [ngClass]="{ 'is-invalid': cO.submitted && cReason.invalid }" required class="fld" matInput placeholder="Cancellation Reason"></textarea>
+                    </mat-form-field>
+                </div>
+                <button type="submit" [class.spinner]="loading" [disabled]="loading" class="btn btn-warning signin-btn small-btn">Send</button>
+            </form>       
+        </div>
+    </div>
+</div>
+
+<div class="full-screen-popup" *ngIf="paymentDPopup">
+    <div class="inr-content">
+        <div class="strip-bar">
+            <i class="material-icons" (click)="hidePaymentDPopup()">arrow_back_ios</i>
+            <span class="heading">
+                Payment Details
+            </span> 
+        </div>
+        <div class="main-content">
+            <p class="imp" routerLink="/Contents/Terms">
+                <b style="font-weight: 500;">
+                    Please Read very carefully Payment Policy, Shipping Policy &amp; Refund Policy before payment
+                </b>
+            </p>
+            <p class="note imp" style="margin:0 0 5px 0!important">
+                Please make offline payment from your end and than select submit transaction no
+            </p>
+            <div class="payment-details view-details pb-5">
+                <div class="form-group mb-0">
+                    <span *ngIf="!!paymentTypeErrMsg" class="text-danger alert-fld-msg">                        
+                        {{paymentTypeErrMsg}}
+                    </span>
+                    <mat-form-field>
+                        <mat-label>Payment Type</mat-label>
+                        <mat-select [value]="modeOfPayment" (ngModelChange)="onChange()" name="pType" #pType="ngModel" [(ngModel)]="modeOfPayment">
+                            <mat-option value="Bank Transfer">Bank Transfer</mat-option>
+                            <mat-option value="UPI">UPI</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div *ngIf="pType.value == 'UPI'">
+                    <div class="card" *ngFor="let upi of upiData"
+                        [class.itemSelect]="selectedPaymentM.id == upi.id"
+                        (click)="selectP(upi, 'UPI')">
+                        <div class="card-inr">
+                            <h4>{{upi.name}}</h4>
+                            <table>
+                                <tr>
+                                    <td><label>{{upi.name}} No.</label></td>
+                                    <td>{{upi.number}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="no-data" *ngIf="!!upiData && upiData.length == 0">
+                        <h5>No Data Found</h5>
+                        <p class="lead">Seller did't share any UPI details. Please contact with seller for payment.</p>
+                    </div>
+                </div>
+                <div *ngIf="pType.value == 'Bank Transfer'">
+                    <div class="card" *ngFor="let bank of bankData;"
+                        [class.itemSelect]="selectedPaymentM.id == bank.id"
+                        (click)="selectP(bank, 'Bank Transfer')">
+                        <div class="card-inr">
+                            <h4>Bank Transfer</h4>
+                            <table>
+                                <tr>
+                                    <td><label>Bank Name</label></td>
+                                    <td>{{bank.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td><label>A/C Type</label></td>
+                                    <td>{{bank.acctype}}</td>
+                                </tr>
+                                <tr>
+                                    <td><label>A/C Name</label></td>
+                                    <td>{{bank.accname}}</td>
+                                </tr>
+                                <tr>
+                                    <td><label>A/C No</label></td>
+                                    <td>{{bank.accno}}</td>
+                                </tr>
+                                <tr>
+                                    <td><label>IFSC Code</label></td>
+                                    <td>{{bank.IFSC}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="no-data" *ngIf="!!bankData && bankData.length == 0">
+                        <h5>No Data Found</h5>
+                        <p class="lead">Seller did't share any Bank details. Please contact with seller for payment.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="float-icon">
+                <i class="material-icons" (click)="showPaymentPopup()">send</i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="small-screen-popup" *ngIf="paymentPopup">
+    <div class="inr-content">
+        <div class="strip-bar">
+            <i class="material-icons" (click)="hidePaymentPopup()">arrow_back_ios</i>
+            <span class="heading">
+                Payment Details
+            </span> 
+        </div>
+        <div class="main-content">
+            <p class="note imp" style="margin-top:0!important">Please submit details after make payment from your end</p>
+            <form name="form" (ngSubmit)="mP.form.valid && makePayment()" #mP="ngForm">
+                <div class="form-group">
+                    <span *ngIf="mP.submitted && tNo.invalid" class="text-danger alert-fld-msg">
+                        <div *ngIf="tNo.errors.required">Transaction No. is required</div>
+                    </span>
+                    <mat-form-field>
+                        <input type="text" name="tNo" [(ngModel)]="transactionId" #tNo="ngModel" [ngClass]="{ 'is-invalid': mP.submitted && tNo.invalid }" required class="fld" matInput placeholder="Transaction No.">
+                    </mat-form-field>
+                </div>
+                <button type="submit" [class.spinner]="loading" [disabled]="loading" class="btn btn-warning signin-btn small-btn">Submit</button>
+            </form>       
+        </div>
+    </div>
+</div>
+</ion-content>

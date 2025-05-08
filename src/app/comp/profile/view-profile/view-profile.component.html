@@ -1,0 +1,420 @@
+<ion-content [fullscreen]="true">
+  <section class="main-page">
+    <div class="overlay-loading" *ngIf="pageLoading">
+        <div class="load">
+            <span class="spinner"></span> Loading...
+        </div>
+    </div>
+    <header class="header-strip">
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <div class="right-icon" mat-button [matMenuTriggerFor]="beforeMenu">
+            <i class="material-icons">more_vert</i>
+            <mat-menu #beforeMenu="matMenu" xPosition="before">
+                <button mat-menu-item routerLink="/Profile/ChangePassword">Change Password</button>
+            </mat-menu>
+        </div>
+    </header>
+    <section class="body-content profile-content">
+        <div class="profile-bar">
+            <div class="profile-img">
+                <img src="assets/img/no-img.jpg" alt="">
+            </div>						
+        </div>
+        <main>
+            <div class="profile-body">
+                <div class="loading" *ngIf="showloader">
+                    <div class="load">
+                        <span class="spinner"></span>
+                    </div>
+                </div>
+                <div class="profile-info" *ngIf="!!profileData">
+                    <h5 class="name">{{profileData.name}}</h5>
+                </div>
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Personal data</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="more-info" *ngIf="!!profileData">
+                            <div class="edit-icon">
+                                <i class="material-icons" routerLink="/Profile/EditProfile">create</i>
+                            </div>
+                            <ul>
+                                <li *ngIf="!!profileData.gender">
+                                    <span class="icon"><i class="material-icons">account_circle</i></span>
+                                    <p>{{profileData.gender}}</p>
+                                </li>
+                                <li *ngIf="!!profileData.mobile">
+                                    <span class="icon"><i class="material-icons">stay_current_portrait</i></span>
+                                    <p>{{profileData.mobile}}</p>
+                                </li>
+                                <li *ngIf="!!profileData.altMobile">
+                                    <span class="icon"><i class="material-icons">stay_current_portrait</i></span>
+                                    <p>{{profileData.altMobile}}</p>
+                                </li>
+                                <li *ngIf="!!profileData.email">
+                                    <span class="icon"><i class="material-icons">mail</i></span>
+                                    <p>{{profileData.email}}</p>
+                                </li>
+                                <li *ngIf="!!profileData.address">
+                                    <span class="icon"><i class="material-icons">business</i></span>
+                                    <p>{{profileData.address}}</p>
+                                </li>
+                                <li *ngIf="!!profileData.city">
+                                    <span class="icon"><i class="material-icons">location_city</i></span>
+                                    <p>{{profileData.city}}</p>
+                                </li>
+                                <li *ngIf="!!profileData.pincode">
+                                    <span class="icon"><i class="material-icons">fiber_pin</i></span>
+                                    <p>{{profileData.pincode}}</p>
+                                </li>
+                                <li *ngIf="!!profileData.state">
+                                    <span class="icon"><i class="material-icons">emoji_transportation</i></span>
+                                    <p>{{profileData.state}}</p>
+                                </li>
+                                <li *ngIf="!!profileData.country">
+                                    <span class="icon"><i class="material-icons">public</i></span>
+                                    <p>{{profileData.country}}</p>
+                                </li>
+                            </ul>						
+                        </div>
+                    </mat-expansion-panel>
+                    
+                    <mat-expansion-panel *ngIf="!!profileData" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Brand Details</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <ng-template #noBData>
+                            <div class="no-data">
+                                <h5>No Data Found</h5>
+                                <p class="lead">You did't added your brand details yet. <br/>Please add for Product Sell.</p>
+                                <button (click)="showBrandDetailsPopup();" class="btn btn-warning signin-btn">Add Details</button>
+                            </div>
+                        </ng-template>
+                        <div class="view-details" *ngIf="!!brandData && !!brandData.name else noBData">
+                            <div class="edit-icon">
+                                <i class="material-icons" (click)="showBrandDetailsPopup();">create</i>
+                            </div>
+                            <table>
+                                <tr *ngIf="!!brandData.name">
+                                    <td><label>Brand Name</label></td>
+                                    <td class="capital">{{brandData.name}}</td>
+                                </tr>
+                                <tr *ngIf="!!brandData.code">
+                                    <td><label>Brand Code</label></td>
+                                    <td class="caps">{{brandData.code}}</td>
+                                </tr>
+                            </table>
+                            <p class="note">
+                                * For product price you have to input code for product at the time of uploading, 
+                                price is multiply with your code. Multiple number you have to enter while create group.
+                                (Your Brand Code <b>ABC</b>, Your <b>Group Price Code *10 / *11 / *12</b>, If you enter product code 100, 
+                                than your product code will be <b>ABC110</b> and price will for group <b>1000 / 1100 / 1200</b> )
+                            </p>
+                        </div>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel *ngIf="!!profileData" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Payment Details</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="payment-details view-details">
+                            <ng-template #noData>
+                                <div class="no-data">
+                                    <h5>No Data Found</h5>
+                                    <p class="lead">Please add your payment details for receive payments.</p>
+                                    <!-- <button class="btn btn-warning signin-btn" (click)="showAddPaymentDetailsPopup()">Add Payment Details</button> -->
+                                </div>
+                            </ng-template>                            
+                            <div *ngIf="!!bankData || !!upiData && bankData.length > 0 || upiData.length > 0 else noData">
+                                <div class="card" *ngFor="let bank of bankData;">
+                                    <div class="card-inr">
+                                        <div class="edit-icon">
+                                            <i class="material-icons" (click)="showEditBankPopup({
+                                                id : bank.id,
+                                                account_type:bank.acctype, bank_name: bank.name,
+                                                account_name:bank.accname, account_no:bank.accno,
+                                                IFSC_code:bank.IFSC})">create</i>
+                                        </div>
+                                        <h4>Bank Transfer</h4>
+                                        <table>
+                                            <tr>
+                                                <td><label>Bank Name</label></td>
+                                                <td class="capital">{{bank.name}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><label>A/C Type</label></td>
+                                                <td>{{bank.acctype}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><label>A/C Name</label></td>
+                                                <td class="capital">{{bank.accname}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><label>A/C No</label></td>
+                                                <td>{{bank.accno}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><label>IFSC Code</label></td>
+                                                <td>{{bank.IFSC}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="card" *ngFor="let upi of upiData">
+                                    <div class="card-inr">
+                                        <div class="edit-icon">
+                                            <i class="material-icons" (click)="showEditUPIPopup({UPI: upi.name,number:upi.number})">create</i>
+                                        </div>
+                                        <h4>{{upi.name}}</h4>
+                                        <table>
+                                            <tr>
+                                                <td><label>{{upi.name}} No.</label></td>
+                                                <td>{{upi.number}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-action-row>
+                            <button class="btn btn-warning signin-btn" (click)="showAddPaymentDetailsPopup()">Add Payment Details</button>
+                        </mat-action-row>
+                    </mat-expansion-panel>
+                </mat-accordion>            
+            </div>
+        </main>
+    </section>
+</section>
+
+<div class="small-screen-popup" *ngIf="brandDetailsPopup">
+    <div class="inr-content">
+        <div class="strip-bar">
+            <i class="material-icons" (click)="hideBrandDetailsPopup()">arrow_back_ios</i>
+            <span class="heading">
+                Brand Details 
+            </span> 
+        </div>
+        <div class="main-content">
+            <form name="form" (ngSubmit)="eBD.form.valid && updateBrandD()" #eBD="ngForm">
+                <div class="form-group">
+                    <span *ngIf="eBD.submitted && name.invalid" class="text-danger alert-fld-msg">
+                        <div *ngIf="name.errors.required">Brand Name is required</div>
+                    </span>
+                    <mat-form-field>
+                        <input type="text" name="name" [(ngModel)]="brandData.name" #name="ngModel" [ngClass]="{ 'is-invalid': eBD.submitted && name.invalid }" required class="fld" matInput placeholder="Brand Name">
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <span *ngIf="eBD.submitted && code.invalid" class="text-danger alert-fld-msg">
+                        <div *ngIf="code.errors.required">Brand Code is required</div>
+                    </span>
+                    <mat-form-field>
+                        <input type="text" name="code" [(ngModel)]="brandData.code" #code="ngModel" [ngClass]="{ 'is-invalid': eBD.submitted && code.invalid }" required class="fld" matInput placeholder="Brand Code">
+                    </mat-form-field>
+                </div>
+                <button type="submit" [class.spinner]="loading" [disabled]="loading" class="btn btn-warning signin-btn small-btn">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="full-screen-popup" *ngIf="addPaymentDetailsPopup">
+    <div class="inr-content">
+        <div class="strip-bar">
+            <i class="material-icons" (click)="hideAddPaymentDetailsPopup()">arrow_back_ios</i>
+            <span class="heading">
+                Add Payment Details 
+            </span> 
+        </div>
+        <div class="main-content">
+            <div class="form-group">
+                <mat-form-field>
+                    <mat-label>Payment Type</mat-label>
+                    <mat-select [value]="paymentType" name="pType" #pType="ngModel" [(ngModel)]="paymentType">
+                        <mat-option value="Banking">Banking</mat-option>
+                        <mat-option value="UPI">UPI</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div id="upi" *ngIf="pType.value == 'UPI'">
+                <form name="form" (ngSubmit)="upiD.form.valid && updateUPID()" #upiD="ngForm">
+                    <div class="form-group">
+                        <span *ngIf="upiD.submitted && upiT.invalid" class="text-danger alert-fld-msg">
+                            <div *ngIf="upiT.errors.required">UPI Type is required</div>
+                        </span>
+                        <mat-form-field>
+                            <mat-label>UPI Type</mat-label>
+                            <mat-select name="upiT" #upiT="ngModel" [(ngModel)]="addUpiData.UPI" [ngClass]="{ 'is-invalid': upiD.submitted && upiT.invalid }" required>
+                                <mat-option value="GPay">GPay</mat-option>
+                                <mat-option value="Paytm">Paytm</mat-option>
+                                <mat-option value="PhonePay">PhonePay</mat-option>
+                                <mat-option value="AmazonPay">AmazonPay</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                        <span *ngIf="upiD.submitted && upiN.invalid" class="text-danger alert-fld-msg">
+                            <div *ngIf="upiN.errors.required">UPI No is required</div>
+                        </span>
+                        <mat-form-field>
+                            <input type="text" name="upiN" [(ngModel)]="addUpiData.number" #upiN="ngModel" [ngClass]="{ 'is-invalid': upiD.submitted && upiN.invalid }" required class="fld" matInput placeholder="UPI No">
+                        </mat-form-field>
+                    </div>
+                    <button type="submit" [class.spinner]="loading" [disabled]="loading" class="btn btn-warning signin-btn small-btn">Add</button>
+                </form>
+            </div>
+            <div id="banking" *ngIf="pType.value == 'Banking'">
+                <form name="form" (ngSubmit)="aBD.form.valid && addBankD()" #aBD="ngForm">
+                    <div class="form-group">
+                        <span *ngIf="aBD.submitted && acType.invalid" class="text-danger alert-fld-msg">
+                            <div *ngIf="acType.errors.required">Account Type is required</div>
+                        </span>
+                        <mat-form-field>
+                            <mat-label>Account Type</mat-label>
+                            <mat-select [value]="addBankData.account_type" name="acType" [(ngModel)]="addBankData.account_type" #acType="ngModel" [ngClass]="{ 'is-invalid': aBD.submitted && acType.invalid }" required>
+                                <mat-option value="Savings">Savings</mat-option>
+                                <mat-option value="Current">Current</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                        <span *ngIf="aBD.submitted && bName.invalid" class="text-danger alert-fld-msg">
+                            <div *ngIf="bName.errors.required">Bank Name is required</div>
+                        </span>
+                        <mat-form-field>
+                            <input type="text" name="bName" [(ngModel)]="addBankData.bank_name" #bName="ngModel" [ngClass]="{ 'is-invalid': aBD.submitted && bName.invalid }" required class="fld" matInput placeholder="Bank Name">
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                        <span *ngIf="aBD.submitted && acName.invalid" class="text-danger alert-fld-msg">
+                            <div *ngIf="acName.errors.required">Account Name is required</div>
+                        </span>
+                        <mat-form-field>
+                            <input type="text" name="acName" [(ngModel)]="addBankData.account_name" #acName="ngModel" [ngClass]="{ 'is-invalid': aBD.submitted && acName.invalid }" required class="fld" matInput placeholder="Account Name">
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                        <span *ngIf="aBD.submitted && acNo.invalid" class="text-danger alert-fld-msg">
+                            <div *ngIf="acNo.errors.required">Account No. is required</div>
+                        </span>
+                        <mat-form-field>
+                            <input type="number" name="acNo" [(ngModel)]="addBankData.account_no" #acNo="ngModel" [ngClass]="{ 'is-invalid': aBD.submitted && acNo.invalid }" required class="fld" matInput placeholder="Account No">
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                        <span *ngIf="aBD.submitted && ifsc.invalid" class="text-danger alert-fld-msg">
+                            <div *ngIf="ifsc.errors.required">IFSC Code is required</div>
+                        </span>
+                        <mat-form-field>
+                            <input type="text" name="ifsc" [(ngModel)]="addBankData.IFSC_code" #ifsc="ngModel" [ngClass]="{ 'is-invalid': aBD.submitted && ifsc.invalid }" required class="fld" matInput placeholder="IFSC Code">
+                        </mat-form-field>
+                    </div>
+                    <button type="submit" [class.spinner]="loading" [disabled]="loading" class="btn btn-warning signin-btn small-btn">Add</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="small-screen-popup" *ngIf="editUPIPopup">
+    <div class="inr-content">
+        <div class="strip-bar">
+            <i class="material-icons" (click)="hideEditUPIPopup()">arrow_back_ios</i>
+            <span class="heading">
+                Edit UPI Details 
+            </span> 
+        </div>
+        <div class="main-content">
+            <form name="form" (ngSubmit)="upiD.form.valid && updateUPID()" #upiD="ngForm">
+                <div class="form-group">
+                    <span *ngIf="upiD.submitted && upiT.invalid" class="text-danger alert-fld-msg">
+                        <div *ngIf="upiT.errors.required">UPI Type is required</div>
+                    </span>
+                    <mat-form-field>
+                        <mat-label>UPI Type</mat-label>
+                        <mat-select name="upiT" #upiT="ngModel" [(ngModel)]="addUpiData.UPI" [ngClass]="{ 'is-invalid': upiD.submitted && upiT.invalid }" required>
+                            <mat-option value="GPay">GPay</mat-option>
+                            <mat-option value="Paytm">Paytm</mat-option>
+                            <mat-option value="PhonePay">PhonePay</mat-option>
+                            <mat-option value="AmazonPay">AmazonPay</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <span *ngIf="upiD.submitted && upiN.invalid" class="text-danger alert-fld-msg">
+                        <div *ngIf="upiN.errors.required">UPI No is required</div>
+                    </span>
+                    <mat-form-field>
+                        <input type="text" name="upiN" [(ngModel)]="addUpiData.number" #upiN="ngModel" [ngClass]="{ 'is-invalid': upiD.submitted && upiN.invalid }" required class="fld" matInput placeholder="UPI No">
+                    </mat-form-field>
+                </div>
+                <button type="submit" [class.spinner]="loading" [disabled]="loading" class="btn btn-warning signin-btn small-btn">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="full-screen-popup" *ngIf="editBankPopup">
+    <div class="inr-content">
+        <div class="strip-bar">
+            <i class="material-icons" (click)="hideEditBankPopup()">arrow_back_ios</i>
+            <span class="heading">
+                Edit Bank Details 
+            </span> 
+        </div>
+        <div class="main-content">
+            <form name="form" (ngSubmit)="eBD.form.valid && updateBankD()" #eBD="ngForm">
+                <div class="form-group">
+                    <span *ngIf="eBD.submitted && acType.invalid" class="text-danger alert-fld-msg">
+                        <div *ngIf="acType.errors.required">Account Type is required</div>
+                    </span>
+                    <mat-form-field>
+                        <mat-label>Account Type</mat-label>
+                        <mat-select [value]="UBankData.account_type" [(ngModel)]="UBankData.account_type" name="acType" #acType="ngModel"  [ngClass]="{ 'is-invalid': eBD.submitted && acType.invalid }" required>
+                            <mat-option value="None">None</mat-option>
+                            <mat-option value="Savings">Savings</mat-option>
+                            <mat-option value="Current">Current</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>                
+                <div class="form-group">
+                    <span *ngIf="eBD.submitted && bName.invalid" class="text-danger alert-fld-msg">
+                        <div *ngIf="bName.errors.required">Bank Name is required</div>
+                    </span>
+                    <mat-form-field>
+                        <input type="text" name="bName" [(ngModel)]="UBankData.bank_name" #bName="ngModel" [ngClass]="{ 'is-invalid': eBD.submitted && bName.invalid }" required class="fld" matInput placeholder="Bank Name">
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <span *ngIf="eBD.submitted && acName.invalid" class="text-danger alert-fld-msg">
+                        <div *ngIf="acName.errors.required">Account Name is required</div>
+                    </span>
+                    <mat-form-field>
+                        <input type="text" name="acName" [(ngModel)]="UBankData.account_name" #acName="ngModel" [ngClass]="{ 'is-invalid': eBD.submitted && acName.invalid }" required class="fld" matInput placeholder="Account Name">
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <span *ngIf="eBD.submitted && acNo.invalid" class="text-danger alert-fld-msg">
+                        <div *ngIf="acNo.errors.required">Account No. is required</div>
+                    </span>
+                    <mat-form-field>
+                        <input type="number" name="acNo" [(ngModel)]="UBankData.account_no" #acNo="ngModel" [ngClass]="{ 'is-invalid': eBD.submitted && acNo.invalid }" required class="fld" matInput placeholder="Account No">
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <span *ngIf="eBD.submitted && ifsc.invalid" class="text-danger alert-fld-msg">
+                        <div *ngIf="ifsc.errors.required">IFSC Code is required</div>
+                    </span>
+                    <mat-form-field>
+                        <input type="text" name="ifsc" [(ngModel)]="UBankData.IFSC_code" #ifsc="ngModel" [ngClass]="{ 'is-invalid': eBD.submitted && ifsc.invalid }" required class="fld" matInput placeholder="IFSC Code">
+                    </mat-form-field>
+                </div>
+                <button type="submit" [class.spinner]="loading" [disabled]="loading" class="btn btn-warning signin-btn small-btn">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+</ion-content>

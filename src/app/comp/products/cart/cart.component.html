@@ -1,0 +1,78 @@
+<ion-content [fullscreen]="true">  
+    <section class="main-page">
+      <header class="header-strip">
+          <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+            <span class="title txt">My Cart</span>
+          </ion-buttons>
+          <div class="right-icon">
+              <span class="icon">
+                  <span class="counter">{{totalCartItems}}</span>
+                  <i class="material-icons">shopping_basket</i>
+              </span>
+          </div>
+      </header>
+      <section class="body-content">
+          <main>
+              <div *ngIf="!!cartItems && cartItems.length >0 else nocart">
+                  <div class="product-cart-list">
+                      <div class="card" *ngFor="let cart of cartItems; let i = index">
+                          <div class="product-row">
+                              <div class="product-img">
+                                  <img src="{{cart.imgPath}}{{cart.image}}" alt="">
+                              </div>
+                              <div class="product-info">
+                                  <!-- <p class="name">CZ Necklaces</p> -->
+                                  <p class="code">Code : <b>{{cart.brandC}}{{cart.pCode}}</b></p>
+                                  <p class="price">Price : <b>{{cart.price | curncFilter}}</b></p>
+                                  <div class="qty-box">
+                                      <div class="input-group">
+                                          <span class="input-group-btn left">
+                                              <button (click)="subtractQty(i);" type="button" class="btn">
+                                                  <i class="material-icons">remove</i>
+                                              </button>
+                                          </span>
+                                          <input type="text" class="fld" value="{{cart.qty}}" readonly min="1" max="10">
+                                          <span class="input-group-btn right">
+                                              <button (click)="addQty(i);" type="button" class="btn">
+                                                  <i class="material-icons">add</i>
+                                              </button>
+                                          </span>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="right">
+                                  <button (click)="removeItem(i)" class="btn remove-btn">Remove</button>
+                                  <h6 class="price">{{cart.amount | curncFilter}}</h6>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="cart-btn-row">
+                      <div class="row">
+                          <div class="col">
+                              <div class="cart-total">
+                                  <small>Total Item: <b>{{totalCartItems}}</b></small>
+                                  <h5 class="total">{{totalPrice | curncFilter}}</h5>
+                                  <!-- <small class="ship">+ <b>$10</b> Shipping Charge</small> -->
+                              </div>
+                          </div>
+                          <div class="col">						
+                              <div class="cart-btn">
+                                  <button type="submit" routerLink="/Products/ProductShiping" class="btn btn-warning signin-btn">Proceed</button>
+                              </div>
+                          </div>
+                      </div>					
+                  </div>
+              </div>
+              
+              <ng-template #nocart>
+                  <div class="no-data">
+                      <h5>No Product in your cart</h5>
+                      <p class="lead">Please select any product</p>
+                  </div>
+              </ng-template>
+          </main>
+      </section>
+    </section>
+</ion-content>

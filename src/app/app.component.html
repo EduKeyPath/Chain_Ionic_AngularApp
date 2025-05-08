@@ -1,0 +1,44 @@
+<ion-app>  
+  <div class="snack-bar" id="alertMsg" style="display:none;"></div>
+  
+  <ion-split-pane contentId="main-content">
+    <ion-menu contentId="main-content" type="overlay">
+      <ion-content>
+        <div class="side-nav">
+          <ion-list>
+            <div class="user-profile-box">
+              <div class="avatar">
+                  <img src="/assets/img/no-img.jpg" alt="User">
+              </div>
+              <div class="info">
+                <h6>Hi, Welcome <br/><b>Banty</b></h6>
+                <p>Login Id : <b></b></p>
+                <small>App Version : 1.0.0</small>
+              </div>
+            </div>
+            <div class="menu-list">
+              <div class="nav">
+                <ul>
+                  <li>
+                    <ion-menu-toggle auto-hide="false" *ngFor="let m of sideMenu; let i = index">
+                      <ion-item *ngIf="m.type !== 'func'" (click)="selectedIndex = i" routerDirection="root" [routerLink]="[m.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">
+                        <span class="material-icons">{{m.icon}}</span>
+                        <span class="txt">{{ m.title }}</span>
+                      </ion-item>
+
+                      <ion-item *ngIf="m.type == 'func'"  (click)="logOut()" routerDirection="root" [routerLink]="[m.url]" lines="none" detail="false">
+                        <span class="material-icons">{{m.icon}}</span>
+                        <span class="txt">{{ m.title }}</span>
+                      </ion-item>
+                    </ion-menu-toggle>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </ion-list>
+        </div>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
+</ion-app>
