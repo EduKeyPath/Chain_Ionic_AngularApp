@@ -1,102 +1,107 @@
+# Marketplace App (Angular 9 + Ionic 5 + Bootstrap)
 
-🚀 Angular Feature Practice Project
-This is a comprehensive Angular practice project demonstrating all major Angular features with real-world use cases. Ideal for learners and developers who want to master Angular by hands-on examples.
+This is a hybrid mobile/web marketplace application built using **Angular 9**, **Ionic 5**, supporting full eCommerce functionality with product listing, ordering, group sharing, and content management.
 
-📚 Features Covered
-✅ Template-driven forms
-✅ Reactive forms
-✅ Input & Output decorators
-✅ Custom directives
-✅ File upload handling
-✅ HTTP interceptors
-✅ Observables & async pipe
-✅ Built-in & custom pipes
-✅ Query parameters
-✅ Dependency injection & services
-✅ Lazy-loaded modules
-✅ trackBy in *ngFor for performance
-✅ Route guards (Auth, CanDeactivate, etc.)
-✅ Unit testing with Jasmine & Karma
-✅ Clean folder structure with best practices
+## Features
 
-🛠️ Tech Stack
-Angular ^15+
+### Authentication & User Management
+- Login / Logout
+- User registration with OTP verification
+- Resend OTP, Forgot Password
+- Unauthorized access screen
+- Drawer menu visible before and after login
 
-RxJS
+### User Profile
+- View and edit profile
+- Change password
+- Add finance details
 
-Bootstrap or Angular Material (optional for UI)
+### Product Management
+- Upload product with image
+- Share product on social media
+- "Buy Now" and "Add to Cart" options
+- Product details view
+- Cart management (add, update, remove)
+- One-time upload: Product remains visible until deleted
 
-Jasmine & Karma (Unit Testing)
+### Image Features
+- Upload images from device to cloud
+- Download all product images to device
+- Save image to device
+- Image compression before upload
 
-SCSS/CSS (Styling)
+### Order Management
+- Place order with full lifecycle:
+  - Received → Access → Reject → Process → Shipped → Delivered
+  - Payment Received / Pending Payment
+  - Cancel Order
+- Customer receives notifications for every order status change
 
-📁 Project Structure
-ruby
-Copy
-Edit
-src/
-├── app/
-│   ├── core/              # Core services, interceptors
-│   ├── shared/            # Shared components, directives, pipes
-│   ├── features/          # Feature modules (lazy-loaded)
-│   ├── forms/             # Reactive & template forms
-│   ├── upload/            # File upload module
-│   ├── guards/            # Route guards
-│   ├── directives/        # Custom directives
-│   ├── pipes/             # Custom pipes
-│   └── app-routing.module.ts
-├── assets/
-└── environments/
-⚙️ How to Run
-1. Clone the repo
-bash
-Copy
-Edit
-git clone https://github.com/your-username/angular-feature-practice.git
-cd angular-feature-practice
-2. Install dependencies
-bash
-Copy
-Edit
+### Payments
+- Pay and receive payment options
+
+### Groups & Sharing
+- Create and update groups
+- Add and remove group members
+- Select contact numbers and add to groups
+- Share images to specific groups and social media
+
+### Content Pages
+- Welcome screen
+- Privacy Policy
+- Help & Support
+- Terms and Conditions
+- Contact Page
+
+### Technical Details
+- **Centralized Interceptor** for API calls and global error handling
+- Multiple **custom pipes** for data transformation
+- Modular **services** for API, auth, user, orders, and more
+- Responsive UI using Bootstrap
+
+## Installation
+
+```bash
+git clone https://github.com/your-repo/your_repo.git
+cd your_repo
 npm install
-3. Start the dev server
-bash
-Copy
-Edit
-ng serve
-🧪 Run Unit Tests
-bash
-Copy
-Edit
-ng test
-📌 Best Practices Followed
-Lazy loading and module separation
 
-Environment-specific configurations
+# Run in browser
+ionic serve
+```
 
-Separation of concerns using services
-
-Reusable and testable components
-
-Usage of trackBy for optimized rendering
-
-Form validations (sync + async)
-
-🧠 Learning Goals
-This project was created to practice and consolidate all major Angular concepts, with a focus on:
-
-Clean coding
-
-Component reusability
-
-Reactive programming
-
-Application scalability
+# Run on Android/iOS (add platforms first if needed)
+- ionic cordova run android
+- ionic cordova run ios
+- ionic build --prod
 
 
----
+# Dependencies
+- Angular 9
+- Ionic 5
+- Bootstrap 4
+- Cordova Plugins (Camera, File, Social Sharing, etc.)
+- Firebase / REST API backend (depending on your setup)
 
-# Contributions
 
-This project is for educational/demo purposes. Thanks for checking it out!
+## Copyright
+
+© Banti Shaw. All rights reserved.
+
+- This is a personal project. Redistribution, copying, modification, or commercial use of this project or any part of its code without explicit permission from the author is strictly prohibited.
+
+
+## License
+
+This project is licensed under the **Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)** license.
+
+- Under the following terms:
+- **Attribution** — You must give appropriate credit.
+- **NonCommercial** — You may not use the material for commercial purposes.
+- **NoDerivatives** — If you remix, transform, or build upon the material, you may not distribute the modified material.
+
+### Summary
+This is a **personal project**. Do not copy, redistribute, or modify the code for commercial or public use without written permission from the author.
+
+Full license text: [https://creativecommons.org/licenses/by-nc-nd/4.0/](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 
